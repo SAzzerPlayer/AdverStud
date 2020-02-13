@@ -19,5 +19,25 @@ export default StyleSheet.create({
     date:{
         color: 'red',
         fontWeight: 'bold'
+    },
+    buttons:{
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginBottom:8,
+    },
+    delete:{
+        padding:16,
+        justifyContent: 'center',
+        borderRadius:16,
+        height:32,
+        borderWidth:1,
+        borderColor:'red'
+    },
+    deleteText:{
+        color:'red'
+    },
+    edit:{
+        width:32,
+        height:32
     }
 })

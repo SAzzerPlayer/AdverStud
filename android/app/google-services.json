@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "549354595412",
+    "firebase_url": "https://adverstud.firebaseio.com",
+    "project_id": "adverstud",
+    "storage_bucket": "adverstud.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549354595412:android:76d809e8bc0af5651539c1",
+        "android_client_info": {
+          "package_name": "com.adverstud"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "549354595412-54ubaukb029poppioa9pmtbsuekj5ndj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.adverstud",
+            "certificate_hash": "05ceb7793b493805cf3c6bd0247b461ec9e16140"
+          }
+        },
+        {
+          "client_id": "549354595412-qta5bjhv2nn6qsv5ni1mmc5m2f5h8hh2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCN-82LRe04UT_2dLclQEVokxJnGZcVEQM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "549354595412-qta5bjhv2nn6qsv5ni1mmc5m2f5h8hh2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

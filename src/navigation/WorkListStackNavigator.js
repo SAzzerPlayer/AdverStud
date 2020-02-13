@@ -1,9 +1,10 @@
 import {createStackNavigator} from 'react-navigation-stack';
 import WorkListScreen from '../screens/WorkListScreen';
+import WorkEditScreen from '../screens/WorkEditScreen';
 
 const WorkListStackNavigator = createStackNavigator({
         "WorkList":WorkListScreen,
-        "WorkDescription":WorkListScreen
+        "WorkEdit":WorkEditScreen
     },
     {
         initialRouteName:"WorkList",

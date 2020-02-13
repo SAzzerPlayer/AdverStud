@@ -1,11 +1,12 @@
 import React from 'react';
 import {Animated, View,Text,Image,TouchableOpacity,Dimensions} from 'react-native';
 import {FlingGestureHandler,Directions,State} from 'react-native-gesture-handler';
+import {connect} from 'react-redux';
 import styles from './Style';
 
 const {width, height} = Dimensions.get("window");
 
-export default class extends React.Component{
+class GestureRightSwipe extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -126,7 +127,7 @@ export default class extends React.Component{
             >
                 <View>
                     {this.props.children}
-                    <Animated.View
+                    {!this.props.isHidden && <Animated.View
                         style={[styles.screen,{
                             opacity:this.state.opacity,
                             zIndex: this.state.zIndex
@@ -144,19 +145,40 @@ export default class extends React.Component{
                         </View>
                         <View style={styles.buttonsView}>
                             <TouchableOpacity style={styles.buttonDecline}
-                                onPress={hideView}
+                                onPress={()=>{
+                                    hideView();
+                                    this.props.hideOnSession();
+                                }}
                             >
                                 <Text style={styles.buttonText}>БІЛЬШЕ НЕ ПОКАЗУВАТИ</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.buttonAccept}
-                                onPress={hideView}
+                                onPress={()=>{
+                                    hideView();
+                                    this.props.hideOnFull();
+                                }}
                             >
                                 <Text style={styles.buttonText}>ПРОПУСТИТИ</Text>
                             </TouchableOpacity>
                         </View>
-                    </Animated.View>
+                    </Animated.View>}
                 </View>
             </FlingGestureHandler>
         );
     }
 }
+
+function mapStateToProps(state){
+    return {
+        isHidden: state.global.hideHint
+    }
+}
+
+function mapDispatchToProps(dispatch){
+    return {
+        hideOnSession : () => dispatch({type:"HIDE",value:true}),
+        hideOnFull: () => dispatch({type:"HIDE_FULL",value:true})
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(GestureRightSwipe);

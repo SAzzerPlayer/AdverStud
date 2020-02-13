@@ -31,5 +31,27 @@ export default StyleSheet.create({
     },
     numberText:{
        letterSpacing: 1
+    },
+    header:{
+       flexDirection: 'row',
+        justifyContent: 'space-between',
+        width:'100%',
+        marginBottom:16
+    },
+    delete:{
+       padding:16,
+        borderWidth:1,
+        borderColor:'red',
+        height:32,
+        borderRadius:16,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    deleteText:{
+       color: 'red'
+    },
+    edit:{
+        width:32,
+        height:32
     }
 });

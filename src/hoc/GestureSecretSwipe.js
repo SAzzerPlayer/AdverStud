@@ -5,13 +5,12 @@ import {FlingGestureHandler,Directions,State,RotationGestureHandler} from 'react
 export default class extends React.Component{
     constructor(props){
         super(props);
-        console.log(props);
     }
     render(){
         const onHandlerStateChange = ({nativeEvent}) => {
             const taps = this.props.tapCounter;
             if(taps>2){
-                if(nativeEvent.rotation > 2.5){
+                if(nativeEvent.rotation > 1){
                     this.props.navigation.navigate("Admin");
                 }
             }

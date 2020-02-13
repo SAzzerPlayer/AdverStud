@@ -27,5 +27,16 @@ export default StyleSheet.create({
     h2:{
         fontSize: 14,
         maxWidth:'50%'
+    },
+    buttons:{
+       flexDirection:"row",
+        justifyContent:"flex-end",
+        width:'60%',
+        alignItems:"center",
+        marginBottom:8,
+    },
+    button:{
+        width:32,
+        height:32
     }
 });

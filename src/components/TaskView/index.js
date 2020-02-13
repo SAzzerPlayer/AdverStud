@@ -1,16 +1,40 @@
 import React from 'react';
-import {View,Text} from 'react-native';
+import {View,Text,TouchableOpacity, Image} from 'react-native';
 import Button from '../SmallAttentionButton';
 import styles from './Style';
 
 export default function(props){
+
+    let date = props.data.date;
+    let month = date.getMonth()+1;
+    if(month < 10) month = "0"+month;
+    date = date.getDate()+"."+month+"."+date.getFullYear();
+
+    const onPressNavigate = () => {
+        props.navigation.navigate("TaskDeadlineDescription",{data:props.data,course:props.course,group:props.group})
+    };
+
+    const onPressEdit = () => {
+        props.navigation.navigate("TaskDeadlineEdit",{data:props.data,course:props.course,group:props.group});
+    };
+
     return(
-        <View style={styles.view}>
-            <View style={styles.description}>
-                <Text style={styles.p}>1. Реклама</Text>
-                <Text style={styles.date}>10.06.2020</Text>
+        <View>
+            <View style={styles.buttons}>
+                <TouchableOpacity style={styles.delete} onPress={props.onPressDelete}>
+                    <Text style={styles.deleteText}>ВИДАЛИТИ</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={onPressEdit}>
+                    <Image style={styles.edit} source={require('../../assets/images/pen.png')}/>
+                </TouchableOpacity>
             </View>
-            <Button title={"ЗАВДАННЯ"} onPress={props.onPress}/>
+            <View style={styles.view}>
+                <View style={styles.description}>
+                    <Text style={styles.p}>{props.index + ". "+props.data.title}</Text>
+                    <Text style={styles.date}>{date}</Text>
+                </View>
+                <Button title={"ЗАВДАННЯ"} onPress={onPressNavigate}/>
+            </View>
         </View>
     );
 }
