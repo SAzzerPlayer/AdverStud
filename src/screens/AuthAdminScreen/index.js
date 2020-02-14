@@ -1,11 +1,15 @@
 import React from 'react';
 import {View,Text,TextInput,Alert,ScrollView} from 'react-native';
+import {connect} from 'react-redux';
 import Button from '../../components/AttentionButton';
 import styles from './Style';
 
 import HOCSwipeBack from '../../hoc/GestureRightSwipe';
 
-export default class extends React.Component{
+const globalLogin = "i_love_adver";
+const globalPassword = "salambacha2020";
+
+class AuthAdminScreen extends React.Component{
     constructor(props){
         super(props);
 
@@ -20,22 +24,28 @@ export default class extends React.Component{
 
         const onChangeLogin = (obj) => {
             const text = obj.nativeEvent.text;
-            this.setState({login:text,message:""});
+            this.setState({login:text});
         };
 
         const onChangePassword = (obj) => {
             const text = obj.nativeEvent.text;
-            this.setState({password:text,message:"Невірний пароль або логін"});
+            this.setState({password:text});
         };
 
         const onPressSubmit = () => {
             const [login,password] = [this.state.login,this.state.password];
+            if(login === globalLogin && password === globalPassword){
+                this.setState({isLogged:true,message:""});
+            }
+            else{
+                this.setState({message:"Невірний пароль або логін"})
+            }
             //Alert.alert("Invalid data","You has entered wrong data! Please, check fields.");
-            this.setState({isLogged:true});
         };
 
         const onPressConfirm = () => {
             //Смена режима пользователя
+            this.props.activateAdminMode();
             this.props.navigation.navigate("Menu");
         };
 
@@ -99,3 +109,17 @@ export default class extends React.Component{
         }
     }
 }
+
+function mapStateToProps(state){
+    return {
+        adminMode:state.global.adminMode
+    }
+}
+
+function mapDispatchToProps(dispatch){
+    return{
+        activateAdminMode:()=>{dispatch({type:"ACTIVATE_ADMIN_MODE"})}
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(AuthAdminScreen);

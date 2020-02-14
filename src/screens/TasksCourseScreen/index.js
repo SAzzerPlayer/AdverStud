@@ -20,7 +20,6 @@ class TasksCourseScreen extends React.Component{
             course:course,
             pickerValue: Object.keys(this.props["course"+course].groups)[0]||"Оберіть"
         };
-        console.log(Object.keys(this.props["course"+course].groups))
     }
 
     onPressNavigateTo(routeName){
@@ -97,22 +96,22 @@ class TasksCourseScreen extends React.Component{
                     <Text style={styles.h1}>{course}</Text>
                     <Button title={"Дедлайни".toUpperCase()} onPress={()=>{this.onPressNavigateTo("TaskDeadline")}}/>
                     <Button title={"Матеріали за предметами".toUpperCase()} onPress={onPressLink}/>
-                    <OutlinedButton title={this.state.titleChangeLink} onPress={onPressChangeLink}/>
-                    <TextInput
+                    {this.props.adminMode && <OutlinedButton title={this.state.titleChangeLink} onPress={onPressChangeLink}/>}
+                    {this.props.adminMode && <TextInput
                         editable={this.state.isChangingLink}
                         style={styles.input}
                         value={this.state.link}
                         onChangeText={(text)=>{this.setState({link:text})}}
                         placeholder={"URL-адрес"}
-                    />
-                    <OutlinedButton title={"ДОДАТИ ГРУПУ"} onPress={onPressAddGroup}/>
-                    <TextInput
+                    />}
+                    {this.props.adminMode && <OutlinedButton title={"ДОДАТИ ГРУПУ"} onPress={onPressAddGroup}/>}
+                    {this.props.adminMode && <TextInput
                         style={styles.input}
                         value={this.state.newGroup}
                         onChangeText={(text)=>{this.setState({newGroup:text})}}
                         placeholder={"Назва групи"}
-                    />
-                    <View style={styles.groups}>
+                    />}
+                    {this.props.adminMode && <View style={styles.groups}>
                         <Text style={[styles.h2,{marginBottom:0}]}>Лист груп курсу: </Text>
                         {this.state.groups.length === 0 && <Text style={[styles.h2,{marginBottom:0}]}>Порожньо</Text>}
                         {this.state.groups.length > 0 &&
@@ -129,8 +128,8 @@ class TasksCourseScreen extends React.Component{
                                 })}
                             </Picker>
                         }
-                    </View>
-                    <OutlinedButton title={"ВИДАЛИТИ ГРУПУ"} onPress={onPressDeleteGroup}/>
+                    </View>}
+                    {this.props.adminMode && <OutlinedButton title={"ВИДАЛИТИ ГРУПУ"} onPress={onPressDeleteGroup}/>}
                     <View style={styles.empty}/>
                 </ScrollView>
             </View>
@@ -146,7 +145,8 @@ function mapStateToProps(state){
         course2:state.homework.course2,
         course3:state.homework.course3,
         course4:state.homework.course4,
-        course5:state.homework.course5
+        course5:state.homework.course5,
+        adminMode:state.global.adminMode
     }
 }
 

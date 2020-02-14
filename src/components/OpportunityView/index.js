@@ -22,14 +22,14 @@ export default function (props) {
 
     return(
         <View>
-            <View style={styles.buttons}>
+            {props.adminMode && <View style={styles.buttons}>
                 <TouchableOpacity style={styles.delete} onPress={onPressDelete}>
                     <Text style={styles.deleteText}>ВИДАЛИТИ</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={onPressEdit}>
                     <Image style={styles.edit} source={require('../../assets/images/pen.png')}/>
                 </TouchableOpacity>
-            </View>
+            </View>}
             <View style={styles.view}>
                 <Text style={styles.h1}>{props.data.name}</Text>
                 {props.isOpportunity && <Text style={styles.h2}>Умови</Text>}

@@ -60,5 +60,24 @@ export default StyleSheet.create({
         paddingLeft:36,
         height:60,
         marginBottom:24
-    }
+    },
+    header:{
+        flexDirection:'row',
+        justifyContent: 'space-between',
+        marginTop:90,
+        marginBottom:24
+    },
+    add:{
+        padding:16,
+        borderWidth:1,
+        borderColor:"green",
+        borderRadius:16,
+        height:32,
+        justifyContent: 'center'
+    },
+    addText:{
+        color: 'green',
+        fontWeight: '100'
+    },
+
 })

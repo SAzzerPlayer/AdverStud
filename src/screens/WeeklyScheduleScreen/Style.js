@@ -60,5 +60,9 @@ export default StyleSheet.create({
         paddingLeft:36,
         height:60,
         marginBottom:24
+    },
+    edit:{
+        width:32,
+        height:32
     }
 })

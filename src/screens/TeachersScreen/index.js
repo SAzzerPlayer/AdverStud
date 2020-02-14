@@ -10,7 +10,12 @@ class TeachersScreen extends React.Component{
     constructor(props){
         super(props);
     }
-
+    componentDidMount(){
+        if(this.props.teachers.length === 0 && !this.props.adminMode){
+            this.props.navigation.pop();
+            this.props.navigation.navigate("NotFound");
+        }
+    }
     render(){
         const onPressAdd = () => {
             console.log(this.props.teachers);
@@ -22,12 +27,12 @@ class TeachersScreen extends React.Component{
                 <View style={styles.header}>
                     <View style={styles.empty}/>
                     <Text style={styles.h1}>Викладачі</Text>
-                    {true && <TouchableOpacity style={styles.add}
+                    {this.props.adminMode && <TouchableOpacity style={styles.add}
                         onPress={onPressAdd}
                     >
                         <Text style={styles.addText}>ДОДАТИ</Text>
                     </TouchableOpacity>}
-                    {false && <View style={styles.empty}/>}
+                    {!this.props.adminMode && <View style={styles.empty}/>}
                 </View>
                 <Text style={styles.h2}>Кафедра реклами та PR</Text>
                 <ScrollView>
@@ -36,7 +41,7 @@ class TeachersScreen extends React.Component{
                                             data = {currElem}
                                             onPress={()=>{this.props.navigation.navigate("TeacherContact",{data:currElem})}}
                                             navigation={this.props.navigation}
-
+                                            adminMode={this.props.adminMode}
                         />
                     })}
                     {this.props.teachers.length===0 && <Text style={styles.h2}>Нажаль, дані відсутні</Text>}
@@ -49,7 +54,8 @@ class TeachersScreen extends React.Component{
 
 function mapStateToProps(state){
     return {
-        teachers:state.teacher.arr
+        teachers:state.teacher.arr,
+        adminMode:state.global.adminMode
     }
 }
 

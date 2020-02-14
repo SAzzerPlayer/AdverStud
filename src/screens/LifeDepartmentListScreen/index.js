@@ -11,6 +11,13 @@ class LifeDepartmentScreen extends React.Component{
         super(props);
     }
 
+    componentDidMount(){
+        if(this.props.departments.length === 0 && !this.props.adminMode){
+            this.props.navigation.pop();
+            this.props.navigation.navigate("NotFound");
+        }
+    }
+
     sortArrayByDate(elem1,elem2){
         if(elem1.date > elem2.date){
             return 1;
@@ -34,10 +41,11 @@ class LifeDepartmentScreen extends React.Component{
                     <View style={styles.header}>
                         <View style={styles.empty}/>
                         <Text style={styles.h1}>ЖИТТЯ КАФЕДРИ</Text>
-                        <TouchableOpacity style={styles.add}
+                        {this.props.adminMode && <TouchableOpacity style={styles.add}
                             onPress={onPressAdd}>
                             <Text style={styles.addText}>ДОДАТИ</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity>}
+                        {!this.props.adminMode && <View style={styles.empty}/>}
                     </View>
                     {this.props.departments.sort(this.sortArrayByDate).reverse().map(( currElem,index)=>{
 
@@ -50,9 +58,11 @@ class LifeDepartmentScreen extends React.Component{
                                                 navigation={this.props.navigation}
                                                 key={index}
                                                 onPressDelete={onPressDelete}
+                                                adminMode={this.props.adminMode}
                             />
                         )
                     })}
+                    {this.props.departments.length === 0 && <Text style={styles.h1}>Нажаль, дані відсутні</Text>}
                 </ScrollView>
             </View>
             </HOCSwipeBack>
@@ -62,7 +72,8 @@ class LifeDepartmentScreen extends React.Component{
 
 function mapStateToProps(state){
     return {
-        departments:state.department.arr
+        departments:state.department.arr,
+        adminMode:state.global.adminMode
     };
 }
 

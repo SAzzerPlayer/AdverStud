@@ -44,7 +44,13 @@ export default function(state=initialState,action){
                 arr:arr
             }
         }
-
+        case "LOAD_TEACHERS":{
+            let arr = action.value;
+            state.arr = arr;
+            return {
+                ...state
+            }
+        }
     }
     return state;
 };

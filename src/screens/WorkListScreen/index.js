@@ -10,6 +10,12 @@ class WorkListScreen extends React.Component{
     constructor(props){
         super(props);
     }
+    componentDidMount(){
+        if(this.props.works.length === 0 && !this.props.adminMode){
+            this.props.navigation.pop();
+            this.props.navigation.navigate("NotFound");
+        }
+    }
     render(){
 
         const onPressAdd = () => {
@@ -23,10 +29,11 @@ class WorkListScreen extends React.Component{
                     <View style={styles.header}>
                         <View style={styles.empty}/>
                         <Text style={styles.h1}>РОБОТА</Text>
-                        <TouchableOpacity style={styles.add}
+                        {this.props.adminMode && <TouchableOpacity style={styles.add}
                             onPress={onPressAdd}>
                             <Text style={styles.addText}>ДОДАТИ</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity>}
+                        {!this.props.adminMode && <View style={styles.empty}/>}
                     </View>
                     {this.props.works.map((currElem)=>{
                         const onPressDelete = () => {
@@ -39,6 +46,7 @@ class WorkListScreen extends React.Component{
                                 navigation={this.props.navigation}
                                 onPressDelete={onPressDelete}
                                 isWork
+                                adminMode={this.props.adminMode}
                             />
                         );
                     })}
@@ -52,7 +60,8 @@ class WorkListScreen extends React.Component{
 
 function mapStateToProps(state){
     return {
-        works: state.work.arr
+        works: state.work.arr,
+        adminMode: state.global.adminMode
     };
 }
 

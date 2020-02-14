@@ -8,7 +8,7 @@ export default function(props){
     };
     return(
         <View>
-            {true && <View style={styles.buttons}>
+            {props.adminMode && <View style={styles.buttons}>
                 <TouchableOpacity onPress={onPressEdit}>
                     <Image source={require("../../assets/images/pen.png")} style={styles.button}/>
                 </TouchableOpacity>

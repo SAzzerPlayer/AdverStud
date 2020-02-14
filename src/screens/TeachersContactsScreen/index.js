@@ -36,7 +36,7 @@ class TeachersContactsScreen extends React.Component{
         return(
             <HOCSwipeBack onSwipe={this.props.navigation.pop}>
                 <View style={styles.screen}>
-                    {true && <View style={styles.header}>
+                    {this.props.adminMode && <View style={styles.header}>
                         <TouchableOpacity style={styles.delete}
                             onPress={onPressDelete}>
                             <Text style={styles.deleteText}>ВИДАЛИТИ</Text>
@@ -59,7 +59,7 @@ class TeachersContactsScreen extends React.Component{
 
 function mapStateToProps(state){
     return {
-
+        adminMode:state.global.adminMode
     }
 }
 

@@ -53,10 +53,10 @@ class TasksDeadlineScreen extends React.Component{
                     <View style={styles.header}>
                         <View style={styles.empty}/>
                         <Text style={[styles.h1,{marginBottom:0}]}>ДЕДЛАЙНИ</Text>
-                        {true && <TouchableOpacity style={styles.add} onPress={onPressAdd}>
+                        {this.props.adminMode && <TouchableOpacity style={styles.add} onPress={onPressAdd}>
                             <Text style={styles.addText}>ДОДАТИ</Text>
                         </TouchableOpacity>}
-                        {false && <View style={styles.empty}/>}
+                        {!this.props.adminMode && <View style={styles.empty}/>}
                     </View>
                     <View style={styles.groupView}>
                         <View style={styles.empty}/>
@@ -82,7 +82,6 @@ class TasksDeadlineScreen extends React.Component{
                                 ]
                             );
                         };
-                        console.log(index);
                         return (
                             <TaskView
                                 data={currElem}
@@ -92,6 +91,7 @@ class TasksDeadlineScreen extends React.Component{
                                 group = {this.state.pickerValue}
                                 key={index}
                                 index={index+1}
+                                adminMode={this.props.adminMode}
                             />
                         )
                     })}
@@ -109,7 +109,8 @@ function mapStateToProps(state){
         course2: state.homework.course2,
         course3: state.homework.course3,
         course4: state.homework.course4,
-        course5: state.homework.course5
+        course5: state.homework.course5,
+        adminMode: state.global.adminMode
     }
 }
 

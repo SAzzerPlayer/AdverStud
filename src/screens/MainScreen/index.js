@@ -1,11 +1,13 @@
 import React from 'react';
-import {View,ScrollView,TouchableOpacity} from 'react-native';
+import {Alert,View,ScrollView,TouchableOpacity} from 'react-native';
+import {connect} from 'react-redux';
 import styles from './Style';
 import Button from '../../components/AttentionButton';
+import OutlinedButton from '../../components/OutlinedAttentionButton';
 import TextField from '../../components/SearchField';
 import GestureSecretSwipe from '../../hoc/GestureSecretSwipe';
 
-export default class extends React.Component{
+class MainScreen extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -17,6 +19,30 @@ export default class extends React.Component{
         this.props.navigation.navigate(routeName);
     }
     render(){
+
+        const onPressSaveChanges = () => {
+            Alert.alert("Підтвердження","Ви впевнені, що хочете зберегти зміни?",
+                [
+                    {text:"Ні",onPress:()=>{}},
+                    {text:"Так",onPress:()=>{
+                            this.props.saveChanges();
+                            setTimeout(this.props.disableSavingProcess,500);
+                        }}
+                    ]
+                )
+        };
+
+        const onPressCancelChanges = () => {
+            Alert.alert("Підтвердження", "Ви впевнені, що хочете відмінити зміни?",
+                    [
+                        {text:"Ні",onPress:()=>{}},
+                        {text:"Так",onPress:()=>{
+                            this.props.cancelChanges();
+                        }}
+                    ]
+                )
+        };
+
         return(
             <GestureSecretSwipe tapCounter={this.state.tapButton} navigation={this.props.navigation}>
                 <View style={styles.screen}>
@@ -29,7 +55,8 @@ export default class extends React.Component{
                         <Button title={"Життя кафедри".toUpperCase()} onPress={()=>{this.onPressNavigateTo("LifeDepartment")}}/>
                         <Button title={"Робота".toUpperCase()} onPress={()=>{this.onPressNavigateTo("Works")}}/>
                         <Button title={"Абітурієнтам".toUpperCase()} onPress={()=>{this.onPressNavigateTo("Enrollee")}}/>
-                        <Button title={"Admin panel".toUpperCase()} onPress={()=>{this.onPressNavigateTo("Admin")}}/>
+                        {this.props.adminMode && <OutlinedButton title={"ПІДТВЕРДИТИ ЗМІНИ"} onPress={onPressSaveChanges}/>}
+                        {this.props.adminMode && <OutlinedButton title={"ВІДМІНИТИ ЗМІНИ"} onPress={onPressCancelChanges}/>}
                     </ScrollView>
                     <TouchableOpacity
                         style={styles.secretButton}
@@ -40,3 +67,19 @@ export default class extends React.Component{
         );
     }
 }
+
+function mapStateToProps(state){
+    return{
+        adminMode:state.global.adminMode
+    }
+}
+
+function mapDispatchToProps(dispatch){
+    return{
+        saveChanges:()=>{dispatch({type:"SAVE_GLOBAL_DATA"})},
+        disableSavingProcess:()=>{dispatch({type:"RESET_SAVING_MODE"})},
+        cancelChanges:()=>{dispatch({type:"CANCEL_GLOBAL_DATA"})}
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(MainScreen);

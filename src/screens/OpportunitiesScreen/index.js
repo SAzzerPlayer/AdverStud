@@ -10,6 +10,12 @@ class OpportunitiesScreen extends React.Component{
     constructor(props){
         super(props);
     }
+    componentDidMount(){
+        if(this.props.opportunities.length === 0 && !this.props.adminMode){
+            this.props.navigation.pop();
+            this.props.navigation.navigate("NotFound");
+        }
+    }
     render(){
 
         const onPressAdd = () => {
@@ -23,12 +29,12 @@ class OpportunitiesScreen extends React.Component{
                     <View style={styles.header}>
                         <View style={styles.empty}/>
                         <Text style={styles.h1}>МОЖЛИВОСТІ</Text>
-                        {true && <TouchableOpacity style={styles.add}
+                        {this.props.adminMode && <TouchableOpacity style={styles.add}
                             onPress={onPressAdd}
                         >
                             <Text style={styles.addText}>ДОДАТИ</Text>
                         </TouchableOpacity>}
-                        {false && <View style={styles.empty}/>}
+                        {!this.props.adminMode && <View style={styles.empty}/>}
                     </View>
                     {this.props.opportunities.map((currElem)=>{
                         const onPressDelete = () => {
@@ -41,6 +47,7 @@ class OpportunitiesScreen extends React.Component{
                                 navigation={this.props.navigation}
                                 onPressDelete={onPressDelete}
                                 isOpportunity
+                                adminMode={this.props.adminMode}
                             />
                         );
                     })}
@@ -54,7 +61,8 @@ class OpportunitiesScreen extends React.Component{
 
 function mapStateToProps(state){
     return {
-        opportunities:state.opportunity.arr
+        opportunities:state.opportunity.arr,
+        adminMode:state.global.adminMode
     };
 }
 

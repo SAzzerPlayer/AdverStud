@@ -18,10 +18,29 @@ class LoadingScreen extends React.Component{
     constructor(props){
         super(props);
     }
-    componentDidMount(){
+    async LoadLastData(){
+        let app = Firebase.initializeApp(config);
+        const database = app.database();
+        //load teachers
+        let itemRef = database.ref("/");
+        itemRef.on("value", snapshot => {
+            let data = snapshot.val();
+            console.log(data);
+            if(data.teachers) this.props.loadTeachers(data.teachers.arr);
+            if(data.schedule) this.props.loadSchedule(data.schedule);
+            if(data.homework) this.props.loadHomeworks(data.homework);
+        });
+    }
+    async LoadCacheData(){
+
+    }
+    async componentDidMount(){
         if(!Firebase.apps.length){
             console.log('connecting');
+            await this.LoadLastData();
         }
+
+        setTimeout(()=>{this.props.navigation.navigate("Menu")},1000);
         //Connecting to the Firebase
         /*let app = Firebase.initializeApp(config);
         const database = app.database();
@@ -37,7 +56,6 @@ class LoadingScreen extends React.Component{
         });*/
 
         /*Loading data from the database*/
-        setTimeout(()=>{this.props.navigation.navigate("Menu")},1000);
     }
     render() {
         return (
@@ -59,7 +77,14 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-
+        loadTeachers:(obj)=>dispatch({type:"LOAD_TEACHERS",value:obj}),
+        loadSchedule:(obj)=>dispatch({type:"LOAD_SCHEDULE",value:obj}),
+        loadOpportunities:(obj)=>dispatch({type:"LOAD_OPPORTUNITIES",value:obj}),
+        loadWorks:(obj)=>dispatch({type:"LOAD_WORKS",value:obj}),
+        loadHomeworks:(obj)=>dispatch({type:"LOAD_HOMEWORKS",value:obj}),
+        loadDepartments:(obj)=>dispatch({type:"LOAD_DEPARTMENTS",value:obj}),
+        loadEnrollee:(obj)=>dispatch({type:"LOAD_ENROLLEE",value:obj}),
+        loadGlobal:(obj)=>dispatch({type:"LOAD_GLOBAL",value:obj}),
     }
 }
 
