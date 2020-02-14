@@ -3,7 +3,7 @@
 const initialState = {
     hideHint: false,
     studyBeginAt: new Date(),
-    adminMode: true,
+    adminMode: false,
     isSavingProcess:false
 };
 

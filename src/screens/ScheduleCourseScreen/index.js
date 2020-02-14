@@ -35,7 +35,7 @@ class ScheduleCourseScreen extends React.Component{
         const onPressNumerator = () => {
             if(this.state.groups.length > 0){
                 this.props.navigation.navigate("WeekScheduleList",{
-                    week:"ЧИСЛІВНИК",
+                    week:"ЧИСЕЛЬНИК",
                     course:this.state.course
                 });
             }
@@ -101,7 +101,7 @@ class ScheduleCourseScreen extends React.Component{
             <View style={styles.screen}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                 <Text style={styles.h1}>{course}</Text>
-                <Button title={"Числівник".toUpperCase()} active={this.state.isNumerator} onPress={onPressNumerator}/>
+                <Button title={"Чисельник".toUpperCase()} active={this.state.isNumerator} onPress={onPressNumerator}/>
                 <Button title={"Знаменник".toUpperCase()} active={!this.state.isNumerator} onPress={onPressDenominator}/>
                 <Button title={"Відпрацювання".toUpperCase()} onPress={onPressMinings}/>
                 <Button title={"Сесія".toUpperCase()} onPress={onPressSessions}/>

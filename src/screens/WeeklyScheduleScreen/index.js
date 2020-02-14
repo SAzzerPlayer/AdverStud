@@ -12,7 +12,7 @@ class WeeklyScheduleScreen extends React.Component{
         const course = this.props.navigation.getParam("course");
         const zeroGroup = Object.keys(this.props["course"+course].groups)[0];
         let schedule = this.props["course"+course].groups[zeroGroup];
-        if(this.props.navigation.getParam("week")==="ЧИСЛІВНИК"){
+        if(this.props.navigation.getParam("week")==="ЧИСЕЛЬНИК"){
             schedule = schedule.numerator;
         }
         else schedule = schedule.denominator;

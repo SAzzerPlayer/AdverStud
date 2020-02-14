@@ -69,6 +69,17 @@ export default function(state=initialState,action){
                 ...courses
             }
         }
+        case "LOAD_HOMEWORK":{
+            let courses = state;
+            for(let i = 1; i < 6;i++){
+                let data = action.value["course"+i];
+                if(data.groups) courses["course"+i].groups = data.groups;
+                if(data.link) courses["course"+i].link = data.link;
+            }
+            return {
+                ...courses
+            }
+        }
     }
     return state;
 };

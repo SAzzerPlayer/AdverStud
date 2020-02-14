@@ -1,11 +1,12 @@
 import React from 'react';
-import {View,Text,ScrollView} from 'react-native';
+import {View,Text,ScrollView,TouchableOpacity} from 'react-native';
+import {connect} from 'react-redux';
 import InfoView from '../../components/InfoTextView';
 import styles from './Style';
 
 import HOCSwipeBack from '../../hoc/GestureRightSwipe';
 
-export default class extends React.Component{
+class EnrolleePreparingScreen extends React.Component{
     constructor(props){
         super(props);
     }
@@ -24,3 +25,17 @@ export default class extends React.Component{
         );
     }
 }
+
+function mapStateToProps(state){
+    return {
+        ...state
+    }
+}
+
+function mapDispatchToProps(dispatch){
+    return {
+
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(EnrolleePreparingScreen);

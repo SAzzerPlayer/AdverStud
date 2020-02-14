@@ -4,7 +4,7 @@ import styles from './Style';
 
 import HOCSwipeBack from '../../hoc/GestureRightSwipe';
 
-export default class extends React.Component{
+class EnrolleeQuestsDescriptionScreen extends React.Component{
     constructor(props){
         super(props);
     }
@@ -26,3 +26,5 @@ export default class extends React.Component{
         );
     }
 }
+
+export default EnrolleeQuestsDescriptionScreen;

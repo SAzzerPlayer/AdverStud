@@ -14,7 +14,7 @@ export default function(state=initialState,action){
         case "CHANGE_WEEKLY_SCHEDULE":{
             let courses = state;
             let schedule = courses["course"+action.course].groups[action.group];
-            if(action.week === "ЧИСЛІВНИК"){
+            if(action.week === "ЧИСЕЛЬНИК"){
                 schedule.numerator = action.value;
             }
             else schedule.denominator = action.value;
@@ -55,6 +55,7 @@ export default function(state=initialState,action){
         }
         case "ADD_SESSION":{
             let courses = state;
+            console.log(action.value);
             let sessions = courses["course"+action.course].sessions;
             sessions.push(action.value);
             return{

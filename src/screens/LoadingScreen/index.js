@@ -18,16 +18,20 @@ class LoadingScreen extends React.Component{
     constructor(props){
         super(props);
     }
-    async LoadLastData(){
-        let app = Firebase.initializeApp(config);
-        const database = app.database();
+    async LoadLastData(isInitialize){
+        let database = null;
+        if(Firebase.apps.length === 0) {
+            let app = Firebase.initializeApp(config);
+            database = app.database();
+        }
+        else database = Firebase.database();
         //load teachers
         let itemRef = database.ref("/");
         itemRef.on("value", snapshot => {
             let data = snapshot.val();
-            console.log(data);
             if(data.teachers) this.props.loadTeachers(data.teachers.arr);
             if(data.schedule) this.props.loadSchedule(data.schedule);
+            console.log(data.homework);
             if(data.homework) this.props.loadHomeworks(data.homework);
         });
     }
@@ -37,7 +41,7 @@ class LoadingScreen extends React.Component{
     async componentDidMount(){
         if(!Firebase.apps.length){
             console.log('connecting');
-            await this.LoadLastData();
+            //await this.LoadLastData();
         }
 
         setTimeout(()=>{this.props.navigation.navigate("Menu")},1000);

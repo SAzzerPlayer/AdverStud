@@ -15,7 +15,26 @@ export default StyleSheet.create({
         fontSize:18,
         fontWeight: 'bold',
         textAlign:"center",
-        marginBottom: 24,
-        marginTop:90
-    }
+    },
+    header:{
+        flexDirection:'row',
+        justifyContent: 'space-between',
+        marginTop:90,
+        marginBottom:24
+    },
+    empty:{
+
+    },
+    add:{
+        padding:16,
+        borderWidth:1,
+        borderColor:"green",
+        borderRadius:16,
+        height:32,
+        justifyContent: 'center'
+    },
+    addText:{
+        color: 'green',
+        fontWeight: '100'
+    },
 });

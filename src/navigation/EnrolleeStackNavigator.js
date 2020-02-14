@@ -6,6 +6,8 @@ import EnrolleeQuestsScreen from '../screens/EnrolleeQuestsScreen';
 import EnrolleeContestsScreen from '../screens/EnrolleeContestsScreen';
 import EnrolleeQuestsDescriptionScreen from '../screens/EnrolleeQuestsDescriptionScreen';
 import EnrolleeContestsDescriptionScreen from '../screens/EnrolleeContestsDescriptionScreen';
+import EnrolleeQuestEditScreen from '../screens/EnrolleeQuestEditScreen';
+
 
 const EnrolleeContestsStackNavigator = createStackNavigator({
     "EnrolleeContestsList":EnrolleeContestsScreen,
@@ -17,7 +19,8 @@ const EnrolleeContestsStackNavigator = createStackNavigator({
 
 const EnrolleeQuestsStackNavigator = createStackNavigator({
     "EnrolleeQuestsList":EnrolleeQuestsScreen,
-    "EnrolleeQuestsDescription":EnrolleeQuestsDescriptionScreen
+    "EnrolleeQuestsDescription":EnrolleeQuestsDescriptionScreen,
+    "EnrolleeQuestEdit":EnrolleeQuestEditScreen
 },
     {
         headerMode: 'none',

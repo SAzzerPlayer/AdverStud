@@ -20,7 +20,8 @@ export default StyleSheet.create({
         fontSize:16,
         fontWeight: 'bold',
         marginBottom:24,
-        maxWidth:'90%'
+        maxWidth:'100%',
+        textAlign:'center'
     },
     photo:{
        height:196,

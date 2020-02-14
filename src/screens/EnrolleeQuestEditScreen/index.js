@@ -1,24 +1,25 @@
 import React from 'react';
-import {Alert,View, Text, Image, TextInput, ScrollView, TouchableOpacity} from 'react-native';
+import {Alert, View, Text, TextInput, ScrollView, TouchableOpacity, Image} from 'react-native';
+import {Picker} from '@react-native-community/picker';
 import HOCBackSwipe from '../../hoc/GestureRightSwipe';
 import Button from '../../components/AttentionButton';
 import {generateKey} from '../../libs/methods';
 import {connect} from 'react-redux';
 import styles from './Style';
-import ImagePicker from "react-native-image-crop-picker";
 import DatePicker from '@react-native-community/datetimepicker';
-import RNFS from "react-native-fs";
 
-class LifeDepartmentEditScreen extends React.Component{
+class EnrolleeQuestEditScreen extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             id : generateKey(64),
             title:"",
-            description:"",
             date: new Date(),
-            image:require('../../assets/images/noname.png'),
-            lida:""
+            datePickerIsVisible:false,
+            timePickerIsVisible:false,
+            brief:"",
+            description:"",
+            image:require("../../assets/images/pen.png")
         }
     }
 
@@ -34,33 +35,42 @@ class LifeDepartmentEditScreen extends React.Component{
             this.setState({datePickerIsVisible:true});
         };
 
+        const onPressTimePicker = () => {
+            this.setState({timePickerIsVisible:true})
+        };
+
         const onChangeDate = (event,date)=>{
-            this.setState({date:date,datePickerIsVisible:false});
+            this.setState({date:date||new Date(),datePickerIsVisible:false});
+        };
+
+        const onChangeTime = (event,date)=>{
+            let setDate = this.state.date;
+            date = date || new Date();
+            setDate.setHours(date.getHours());
+            setDate.setMinutes(date.getMinutes());
+            this.setState({date:setDate,timePickerIsVisible:false});
         };
 
         const onPressPublish = () => {
 
             const validTitle = this.state.title.length > 0;
-            const validBrief = this.state.brief.length > 0;
-            const validDescription = this.state.description.length > 0;
 
-            if(validTitle && validBrief && validDescription){
+            if(validTitle){
                 let editMode = this.props.navigation.getParam("editMode");
-
                 const obj = {
+                    id:this.state.id,
                     title:this.state.title,
-                    lida:this.state.lida,
-                    description:this.state.description,
-                    image:this.state.image,
                     date:this.state.date,
-                    id:this.state.id
+                    brief:this.state.brief,
+                    description:this.state.description,
+                    image:this.state.image
                 };
 
                 if(editMode){
-                    this.props.changeDepartment(obj);
+                    this.props.changeQuest(obj);
                 }
                 else{
-                    this.props.addDepartment(obj);
+                    this.props.addQuest(obj);
                 }
                 this.props.navigation.popToTop();
                 setTimeout(()=>{this.props.navigation.navigate("Menu")},100);
@@ -70,27 +80,14 @@ class LifeDepartmentEditScreen extends React.Component{
         };
 
         const onPressImagePicker = () => {
-            ImagePicker.openPicker({
-                width: 600,
-                height: 400,
-                cropping: true
-            })
-                .then(async image => {
-                    //Getting coded text of the image
-                    let file = await RNFS.readFile(image.path , 'base64');
-                    //Making it available for showing
-                    let code = 'data:image/jpeg;base64,' + file;
-                    //Saving state
-                    this.setState({image:{uri:code}});
-                })
-                .catch(err=>{this.setState({image:require("../../assets/images/noname.png")})})
+
         };
 
         return(
             <HOCBackSwipe onSwipe={this.props.navigation.pop}>
             <View style={styles.screen}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <Text style={styles.h1}>ПУБЛІКАЦІЯ КОНТЕНТУ</Text>
+                    <Text style={styles.h1}>CЕСІЯ</Text>
                     <View style={styles.inputView}>
                         <Text style={styles.h2}>НАЗВА</Text>
                         <TextInput style={styles.input}
@@ -100,6 +97,31 @@ class LifeDepartmentEditScreen extends React.Component{
                                    value={this.state.title}
                         />
                     </View>
+
+                    <View style={styles.inputView}>
+                        <Text style={styles.h2}>БРІФ</Text>
+                        <TextInput style={styles.multiInput}
+                                   editable
+                                   maxLength={128}
+                                   multiline
+                                   numberOfLines={8}
+                                   onChangeText = {(text)=>{this.setState({brief:text})}}
+                                   value={this.state.brief}
+                        />
+                    </View>
+
+                    <View style={styles.inputView}>
+                        <Text style={styles.h2}>ОПИС</Text>
+                        <TextInput style={styles.multiInput}
+                                   editable
+                                   maxLength={512}
+                                   multiline
+                                   numberOfLines={8}
+                                   onChangeText = {(text)=>{this.setState({description:text})}}
+                                   value={this.state.description}
+                        />
+                    </View>
+
                     <View style={styles.pickerView}>
                         <TouchableOpacity onPress={onPressImagePicker}>
                             <Image style={styles.photo} source={require('../../assets/images/photo.png')}/>
@@ -107,29 +129,7 @@ class LifeDepartmentEditScreen extends React.Component{
                         <Image style={styles.photo} source={this.state.image}/>
                     </View>
                     <View style={styles.inputView}>
-                        <Text style={styles.h2}>ЛІД</Text>
-                        <TextInput style={styles.multiInput}
-                                   editable
-                                   maxLength={128}
-                                   multiline
-                                   numberOfLines={8}
-                                   onChangeText = {(text)=>{this.setState({lida:text})}}
-                                   value={this.state.lida}
-                        />
-                    </View>
-                    <View style={styles.inputView}>
-                        <Text style={styles.h2}>ОПИС НОВИНИ</Text>
-                        <TextInput style={styles.multiInput}
-                                   editable
-                                   maxLength={128}
-                                   multiline
-                                   numberOfLines={8}
-                                   onChangeText = {(text)=>{this.setState({description:text})}}
-                                   value={this.state.description}
-                        />
-                    </View>
-                    <View style={styles.inputView}>
-                        <Text style={styles.h1}>ДАТА</Text>
+                        <Text style={styles.h2}>ДАТА ПРОВЕДЕННЯ</Text>
                         {this.state.datePickerIsVisible && <DatePicker
                             value={this.state.date}
                             onChange={onChangeDate}
@@ -145,8 +145,24 @@ class LifeDepartmentEditScreen extends React.Component{
                             +this.state.date.getFullYear()}</Text>
                         </TouchableOpacity>
                     </View>
+                    <View style={styles.inputView}>
+                        <Text style={styles.h2}>ЧАС ПРОВЕДЕННЯ</Text>
+                        {this.state.timePickerIsVisible && <DatePicker
+                            value={this.state.date}
+                            onChange={onChangeTime}
+                            display={"clock"}
+                            mode={"time"}
+                            is24Hour
+                        />}
+                        <TouchableOpacity style={styles.datePicker}
+                                          onPress={onPressTimePicker}
+                        >
+                            <Text style={[styles.h2,{textAlign:'center'}]}>{this.state.date.getHours()+":"
+                            +this.state.date.getMinutes()}</Text>
+                        </TouchableOpacity>
+                    </View>
                     <Button title={"ОПУБЛІКУВАТИ"} onPress={onPressPublish}/>
-                    <View sstyle={styles.empty}/>
+                    <View style={styles.empty}/>
                 </ScrollView>
             </View>
             </HOCBackSwipe>
@@ -156,16 +172,16 @@ class LifeDepartmentEditScreen extends React.Component{
 
 function mapStateToProps(state){
     return {
-
+        teachers:state.teacher.arr
     }
 }
 
 function mapDispatchToProps(dispatch){
     return {
-        addDepartment:(obj)=>dispatch({type:"ADD_DEPARTMENT",value:obj}),
-        changeDepartment:(obj)=>dispatch({type:"CHANGE_DEPARTMENT",value:obj})
+        addQuest:(obj)=>dispatch({type:"ADD_QUEST",value:obj}),
+        changeQuest:(obj)=>dispatch({type:"CHANGE_QUEST",value:obj})
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(LifeDepartmentEditScreen);
+export default connect(mapStateToProps,mapDispatchToProps)(EnrolleeQuestEditScreen);
 
