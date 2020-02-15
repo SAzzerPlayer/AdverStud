@@ -31,8 +31,14 @@ class WeeklyScheduleScreen extends React.Component{
         });
 
         const onChangePicker = (itemValue,itemIndex)=>{
+            let schedule = this.props["course"+this.state.course].groups[itemValue];
+            if(this.state.week==="ЧИСЕЛЬНИК"){
+                schedule = schedule.numerator;
+            }
+            else schedule = schedule.denominator;
             this.setState({
-                pickerValue:itemValue
+                pickerValue:itemValue,
+                schedule
             })
         };
 
