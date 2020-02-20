@@ -39,6 +39,16 @@ export default function(state=initialState,action){
                 arr:arr
             }
         }
+        case "LOAD_DEPARTMENTS":{
+            let arr = action.value.arr;
+            for(let elem of arr){
+                elem.date = new Date(elem.date);
+            }
+            state.arr = arr;
+            return {
+                ...state
+            }
+        }
     }
     return state;
 };

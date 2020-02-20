@@ -1,5 +1,6 @@
 import React from 'react';
 import {Alert,View, Text, TextInput, ScrollView, TouchableOpacity} from 'react-native';
+import TextColorButtons from '../../components/TextColorButtons';
 import {Picker} from '@react-native-community/picker';
 import HOCBackSwipe from '../../hoc/GestureRightSwipe';
 import Button from '../../components/AttentionButton';
@@ -11,9 +12,11 @@ import DatePicker from '@react-native-community/datetimepicker';
 class SessionEditScreen extends React.Component{
     constructor(props){
         super(props);
+        let teachers = this.props.teachers;
+        if(teachers.length === 0) teachers.push({id:"0"});
         this.state = {
             id : generateKey(64),
-            teacher:this.props.teachers[0].id||"",
+            teacher:this.props.teachers[0].id||"0",
             title:"",
             date: new Date(),
             datePickerIsVisible:false,
@@ -83,9 +86,10 @@ class SessionEditScreen extends React.Component{
                     <Text style={styles.h1}>CЕСІЯ</Text>
                     <View style={styles.inputView}>
                         <Text style={styles.h2}>ДИСЦИПЛІНА</Text>
+                        <TextColorButtons onChange={(text)=>{this.setState({title:text})}} text={this.state.title}/>
                         <TextInput style={styles.input}
                                    editable
-                                   maxLength={80}
+                                   maxLength={128}
                                    onChangeText={(text)=>{this.setState({title:text})}}
                                    value={this.state.title}
                         />
@@ -97,7 +101,11 @@ class SessionEditScreen extends React.Component{
                                 onValueChange={(itemValue,itemIndex)=>{this.setState({teacher:itemValue})}}
                         >
                             {this.props.teachers.map((currElem)=>{
-                                let teacherLabel = currElem.surname+" "+currElem.firstname+" "+currElem.middlename;
+                                let teacherLabel = "";
+                                if(currElem.id === '0'){
+                                    teacherLabel = "Порожньо";
+                                }
+                                else teacherLabel = currElem.surname+" "+currElem.firstname+" "+currElem.middlename;
                                 return (
                                     <Picker.Item label={teacherLabel} value={currElem.id}/>
                                 )

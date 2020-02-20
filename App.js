@@ -7,8 +7,6 @@
  */
 
 import React from 'react';
-import InitialDot from './src/navigation/InitialSwitch';
-
-const App = InitialDot;
+import App from './src/navigation/InitialSwitch';
 
 export default App;

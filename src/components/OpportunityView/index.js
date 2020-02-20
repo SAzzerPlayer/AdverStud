@@ -1,11 +1,16 @@
 import React from 'react';
 import {Alert,View,Text,Linking,TouchableOpacity,Image} from 'react-native';
 import Button from '../AttentionButton';
+import {parseColorText} from "../../libs/methods";
 import styles from './Style';
 export default function (props) {
 
     const onPressLink = () => {
-        Linking.openURL(props.data.link);
+        let regex = /^(https?:\/\/)?([\w\.]+)\.([a-z]{2,6}\.?)(\/[\w\.]*)*\/?$/;
+        if(regex.test(props.data.link)) {
+            Linking.openURL(props.data.link);
+        }
+        else props.navigation.navigate("NotFound");
     };
 
     const onPressDelete = () => {
@@ -34,7 +39,7 @@ export default function (props) {
                 <Text style={styles.h1}>{props.data.name}</Text>
                 {props.isOpportunity && <Text style={styles.h2}>Умови</Text>}
                 {props.isWork && <Text style={styles.h2}>Вимоги</Text>}
-                <Text style={styles.p}>{props.data.description}</Text>
+                <Text style={styles.p}>{parseColorText(props.data.description)}</Text>
                 <Button title={"Дізнатися більше".toUpperCase()} onPress={onPressLink}/>
             </View>
         </View>

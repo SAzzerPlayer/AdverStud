@@ -131,9 +131,15 @@ export default function(state=initialState,action){
                 if(schedule["course"+i]) {
                     if (schedule["course" + i].minings) {
                         state["course" + i].minings = schedule["course" + i].minings;
+                        for(let elem of state["course"+i].minings){
+                            elem.date = new Date(elem.date);
+                        }
                     }
                     if (schedule["course" + i].sessions) {
                         state["course" + i].sessions = schedule["course" + i].sessions;
+                        for(let elem of state["course"+i].sessions){
+                            elem.date = new Date(elem.date);
+                        }
                     }
                     if (schedule["course" + i].groups) {
                         state["course" + i].groups = schedule["course" + i].groups;

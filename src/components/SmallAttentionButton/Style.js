@@ -27,3 +27,4 @@ export default StyleSheet.create({
 });
 //export const gradientColors = ['rgba(255,255,255,0.05) -119.83%','#FCD404'];
 export const gradientColors = ['#FCD404','#FCD404'];
+export const gradientOffColors = ['#C4C4C4','#C4C4C4'];

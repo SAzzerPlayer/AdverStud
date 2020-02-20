@@ -46,14 +46,14 @@ class SessionListScreen extends React.Component{
                         {!this.props.adminMode && <View style={styles.empty}/>}
                     </View>
                     {this.state.sessions.sort(sortByDate).map((currElem)=>{
-
+                        let teacher = this.props.teachers.find((element)=>{
+                            if(element.id === currElem.teacher) return true;
+                            else return false;
+                        });
                         const onPressTeacher = () => {
                             this.props.navigation.navigate("TeacherInfo",
                                 {
-                                    data:this.props.teachers.find((element)=>{
-                                        if(element.id === currElem.teacher) return true;
-                                        else return false;
-                                    })
+                                    data:teacher
                                 });
                         };
 
@@ -69,7 +69,7 @@ class SessionListScreen extends React.Component{
                         };
 
                         const onPressEdit = () => {
-                            props.navigation.navigate("SessionEdit",{editMode:true,data:currElem,course:this.state.course})
+                            this.props.navigation.navigate("SessionEdit",{editMode:true,data:currElem,course:this.state.course})
                         };
 
                         let month = currElem.date.getMonth()+1;
@@ -87,6 +87,7 @@ class SessionListScreen extends React.Component{
                                 onPressDelete={onPressDelete}
                                 onPressEdit={onPressEdit}
                                 adminMode={this.props.adminMode}
+                                teacher = {teacher}
                             />
 
                         )

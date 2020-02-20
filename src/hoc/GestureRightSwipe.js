@@ -147,7 +147,7 @@ class GestureRightSwipe extends React.Component{
                             <TouchableOpacity style={styles.buttonDecline}
                                 onPress={()=>{
                                     hideView();
-                                    this.props.hideOnSession();
+                                    this.props.hideOnFull();
                                 }}
                             >
                                 <Text style={styles.buttonText}>БІЛЬШЕ НЕ ПОКАЗУВАТИ</Text>
@@ -155,7 +155,7 @@ class GestureRightSwipe extends React.Component{
                             <TouchableOpacity style={styles.buttonAccept}
                                 onPress={()=>{
                                     hideView();
-                                    this.props.hideOnFull();
+                                    this.props.hideOnSession();
                                 }}
                             >
                                 <Text style={styles.buttonText}>ПРОПУСТИТИ</Text>

@@ -1,10 +1,13 @@
-// ToDo: create RNFS method to read global config
+
+import RNFS from 'react-native-fs';
+
 //The model of data of Department
 const initialState = {
     hideHint: false,
     studyBeginAt: new Date(),
     adminMode: false,
-    isSavingProcess:false
+    isSavingProcess:false,
+    snapshotAtDate: new Date()
 };
 
 export default function(state=initialState,action){
@@ -16,6 +19,7 @@ export default function(state=initialState,action){
             }
         }
         case 'HIDE_FULL':{
+            RNFS.writeFile(RNFS.DocumentDirectoryPath+"/config.json",JSON.stringify({"hide_prompts":true}));
             state.hideHint = true;
             return {
                 ...state
@@ -41,6 +45,13 @@ export default function(state=initialState,action){
         }
         case "RESET_SAVING_MODE":{
             state.isSavingProcess = false;
+            return {
+                ...state
+            }
+        }
+        case "LOAD_GLOBAL":{
+            state.snapshotAtDate = new Date(action.value.snapshotAtDate);
+            state.studyBeginAt = new Date(action.value.studyBeginAt);
             return {
                 ...state
             }

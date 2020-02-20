@@ -40,6 +40,15 @@ export default function(state=initialState,action){
                 arr:arr
             }
         }
+        case "LOAD_OPPORTUNITIES":{
+            console.log(action.value);
+            let arr = action.value.arr;
+            state.arr = arr;
+            return {
+                ...state
+            }
+
+        }
     }
     return state;
 };

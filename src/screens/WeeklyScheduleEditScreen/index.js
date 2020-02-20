@@ -2,6 +2,7 @@ import React from 'react';
 import {Alert,View,Text,TextInput,ScrollView} from 'react-native';
 import Button from '../../components/AttentionButton';
 import HOCBackSwipe from '../../hoc/GestureRightSwipe';
+import TextColorButtons from '../../components/TextColorButtons'
 import {generateKey} from "../../libs/methods";
 import {connect} from 'react-redux';
 import styles from './Style';
@@ -62,9 +63,9 @@ class WeeklyScheduleEditScreen extends React.Component{
                     <Text style={[styles.h2,{textAlign:"center"}]}>{this.state.week}</Text>
                     <View style={styles.inputView}>
                         <Text style={styles.h2}>ПОНЕДІЛОК</Text>
+                        <TextColorButtons onChange={(text)=>{this.setState({monday:text})}} text={this.state.monday} />
                         <TextInput style={styles.multiInput}
                                    editable
-                                   maxLength={1024}
                                    multiline
                                    numberOfLines={8}
                                    onChangeText = {(text)=>{this.setState({monday:text})}}
@@ -73,20 +74,22 @@ class WeeklyScheduleEditScreen extends React.Component{
                     </View>
                     <View style={styles.inputView}>
                         <Text style={styles.h2}>ВІВТОРОК</Text>
+                        <TextColorButtons onChange={(text)=>{this.setState({tuesday:text})}} text={this.state.tuesday} />
                         <TextInput style={styles.multiInput}
                                    editable
-                                   maxLength={1024}
                                    multiline
                                    numberOfLines={8}
                                    onChangeText = {(text)=>{this.setState({tuesday:text})}}
+                                   onBlur={()=>{console.log("I'm blurreed")}}
+                                   blurOnSubmit={true}
                                    value={this.state.tuesday}
                         />
                     </View>
                     <View style={styles.inputView}>
                         <Text style={styles.h2}>СЕРЕДА</Text>
+                        <TextColorButtons onChange={(text)=>{this.setState({wednesday:text})}} text={this.state.wednesday} />
                         <TextInput style={styles.multiInput}
                                    editable
-                                   maxLength={1024}
                                    multiline
                                    numberOfLines={8}
                                    onChangeText = {(text)=>{this.setState({wednesday:text})}}
@@ -95,9 +98,9 @@ class WeeklyScheduleEditScreen extends React.Component{
                     </View>
                     <View style={styles.inputView}>
                         <Text style={styles.h2}>ЧЕТВЕР</Text>
+                        <TextColorButtons onChange={(text)=>{this.setState({thursday:text})}} text={this.state.thursday} />
                         <TextInput style={styles.multiInput}
                                    editable
-                                   maxLength={1024}
                                    multiline
                                    numberOfLines={8}
                                    onChangeText = {(text)=>{this.setState({thursday:text})}}
@@ -106,9 +109,9 @@ class WeeklyScheduleEditScreen extends React.Component{
                     </View>
                     <View style={styles.inputView}>
                         <Text style={styles.h2}>П'ЯТНИЦЯ</Text>
+                        <TextColorButtons onChange={(text)=>{this.setState({friday:text})}} text={this.state.friday} />
                         <TextInput style={styles.multiInput}
                                    editable
-                                   maxLength={1024}
                                    multiline
                                    numberOfLines={8}
                                    onChangeText = {(text)=>{this.setState({friday:text})}}

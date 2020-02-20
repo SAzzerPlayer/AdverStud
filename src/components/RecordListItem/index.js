@@ -3,7 +3,7 @@ import {View,Text,Linking,TouchableOpacity,Image} from 'react-native';
 import Button from '../AttentionButton';
 import SmallButton from '../SmallAttentionButton';
 import styles from './Style';
-
+import {parseColorText} from '../../libs/methods';
 export default function(props){
 
 
@@ -17,9 +17,10 @@ export default function(props){
                     <Image style={styles.edit} source={require("../../assets/images/pen.png")}/>
                 </TouchableOpacity>
             </View>}
-            <Text style={styles.p}>{props.text}</Text>
+            <Text style={styles.p}>{parseColorText(props.text)}</Text>
             <SmallButton
                 title={"Викладач"}
+                disabled={!props.teacher}
                 onPress={props.onPress}
             />
         </View>

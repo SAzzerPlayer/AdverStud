@@ -15,5 +15,25 @@ export default StyleSheet.create({
     p:{
         fontSize:14,
         fontWeight: 'bold'
+    },
+    buttons:{
+        flexDirection:'row',
+        justifyContent:'space-evenly',
+        marginBottom:8
+    },
+    delete:{
+        padding:8,
+        borderRadius:16,
+        borderWidth:1,
+        borderColor:'red',
+        height:32,
+        justifyContent:'center'
+    },
+    deleteText:{
+        color:'red'
+    },
+    edit:{
+        height:32,
+        width:32
     }
 })

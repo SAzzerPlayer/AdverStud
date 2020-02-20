@@ -1,6 +1,7 @@
 import React from 'react';
 import {Alert,View,Text,TextInput,ScrollView} from 'react-native';
 import Button from '../../components/AttentionButton';
+import TextColorButtons from '../../components/TextColorButtons';
 import HOCBackSwipe from '../../hoc/GestureRightSwipe';
 import {generateKey} from "../../libs/methods";
 import {connect} from 'react-redux';
@@ -53,16 +54,17 @@ class WorkEditScreen extends React.Component{
                         <Text style={styles.h2}>НАЗВА ЗАКЛАДУ</Text>
                         <TextInput style={styles.input}
                                    editable
-                                   maxLength={80}
+                                   maxLength={128}
                                    onChangeText={(text)=>{this.setState({name:text})}}
                                    value={this.state.name}
                         />
                     </View>
                     <View style={styles.inputView}>
                         <Text style={styles.h2}>ВИМОГИ</Text>
+                        <TextColorButtons onChange={(text)=>{this.setState({description:text})}} text={this.state.description}/>
                         <TextInput style={styles.multiInput}
                                    editable
-                                   maxLength={128}
+                                   maxLength={512}
                                    multiline
                                    numberOfLines={8}
                                    onChangeText = {(text)=>{this.setState({description:text})}}

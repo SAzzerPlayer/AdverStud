@@ -4,7 +4,8 @@ export default StyleSheet.create({
     p:{
         fontSize:14,
         fontWeight:'bold',
-        padding:12
+        padding:12,
+        width:'95%'
     },
     buttons:{
         flexDirection: 'row',

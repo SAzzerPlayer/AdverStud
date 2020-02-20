@@ -7,11 +7,13 @@ import EnrolleeContestsScreen from '../screens/EnrolleeContestsScreen';
 import EnrolleeQuestsDescriptionScreen from '../screens/EnrolleeQuestsDescriptionScreen';
 import EnrolleeContestsDescriptionScreen from '../screens/EnrolleeContestsDescriptionScreen';
 import EnrolleeQuestEditScreen from '../screens/EnrolleeQuestEditScreen';
-
+import EnrolleePreparingEditScreen from '../screens/EnrolleePreparingEditScreen';
+import EnrolleeContestsEditScreen from '../screens/EnrolleeContestsEditScreen';
 
 const EnrolleeContestsStackNavigator = createStackNavigator({
     "EnrolleeContestsList":EnrolleeContestsScreen,
-    "EnrolleeContestsDescription":EnrolleeContestsDescriptionScreen
+    "EnrolleeContestsDescription":EnrolleeContestsDescriptionScreen,
+    "EnrolleeContestsEdit":EnrolleeContestsEditScreen
 },{
     headerMode:'none',
     initialRouteName: 'EnrolleeContestsList'
@@ -27,9 +29,18 @@ const EnrolleeQuestsStackNavigator = createStackNavigator({
         initialRouteName: 'EnrolleeQuestsList'
     });
 
+const EnrolleePreparingStackNavigator = createStackNavigator({
+    "EnrolleePreparingList":EnrolleePreparingScreen,
+    "EnrolleePreparingEdit":EnrolleePreparingEditScreen
+},
+    {
+        headerMode: 'none',
+        initialRouteName: "EnrolleePreparingList"
+    });
+
 const EnrolleeStackNavigator =  createStackNavigator({
         "Enrollee":EnrolleeScreen,
-        "EnrolleePreparing":EnrolleePreparingScreen,
+        "EnrolleePreparing":EnrolleePreparingStackNavigator,
         "EnrolleeQuests":EnrolleeQuestsStackNavigator,
         "EnrolleeContests":EnrolleeContestsStackNavigator
     },

@@ -1,6 +1,6 @@
 import {StyleSheet,Dimensions} from 'react-native';
 
-const {width,height} = Dimensions.get("window");
+const {height,width} = Dimensions.get("window");
 
 export default StyleSheet.create({
    screen:{
@@ -8,18 +8,17 @@ export default StyleSheet.create({
        height,
        padding: 24,
        alignItems: 'center',
-       paddingTop:90
    },
     empty:{
-        height: 32,
-        width: '25%'
     },
     header:{
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
-        width: '100%',
-        marginBottom:24
+        textAlign:"center",
+        width:"65%",
+        marginBottom:24,
+        marginTop:90
     },
     add:{
         padding: 16,
@@ -31,16 +30,17 @@ export default StyleSheet.create({
     },
     addText:{
         color:"green",
-        fontWeight: '200'
     },
     h1:{
-       fontSize:20,
-        fontWeight: 'bold'
+        fontSize:18,
+        fontWeight: 'bold',
+        textAlign:"center"
     },
     h2:{
-       fontSize:16,
+        fontSize:16,
         fontWeight: 'bold',
-        marginBottom:24
+        marginBottom: 24,
+        textAlign:"center"
     }
 
 });

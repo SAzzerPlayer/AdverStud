@@ -39,6 +39,13 @@ export default function(state=initialState,action){
                 arr:arr
             }
         }
+        case "LOAD_WORKS":{
+            let arr = action.value.arr;
+            state.arr = arr;
+            return {
+                ...state
+            }
+        }
     }
     return state;
 };

@@ -7,14 +7,13 @@ import {generateKey} from "../../libs/methods";
 import {connect} from 'react-redux';
 import styles from './Style';
 
-class OpportunityEditScreen extends React.Component{
+class EnrolleePreparingEditScreen extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             id:generateKey(64),
-            name:"",
+            title:"",
             description:"",
-            url:""
         }
     }
     componentDidMount(){
@@ -27,15 +26,14 @@ class OpportunityEditScreen extends React.Component{
         const onPressPublish = () => {
             let isEdit = this.props.navigation.getParam("editMode");
 
-            const validUrl = this.state.url.length > 0;
             const validDescription = this.state.description.length > 0;
-            const validName = this.state.name.length > 0;
+            const validTitle = this.state.title.length > 0;
 
-            if(validUrl && validDescription && validName) {
+            if(validTitle && validDescription) {
                 if (isEdit) {
-                    this.props.changeOpportunity(this.state);
+                    this.props.changePrepare(this.state);
                 } else {
-                    this.props.addOpportunity(this.state);
+                    this.props.addPrepare(this.state);
                 }
                 this.props.navigation.popToTop();
                 setTimeout(()=>{this.props.navigation.navigate("Menu")},100);
@@ -55,28 +53,20 @@ class OpportunityEditScreen extends React.Component{
                         <TextInput style={styles.input}
                                    editable
                                    maxLength={128}
-                                   onChangeText={(text)=>{this.setState({name:text})}}
-                                   value={this.state.name}
+                                   onChangeText={(text)=>{this.setState({title:text})}}
+                                   value={this.state.title}
                         />
                     </View>
                     <View style={styles.inputView}>
-                        <Text style={styles.h2}>УМОВИ</Text>
+                        <Text style={styles.h2}>ОПИС</Text>
                         <TextColorButtons onChange={(text)=>{this.setState({description:text})}} text={this.state.description}/>
                         <TextInput style={styles.multiInput}
                                    editable
-                                   maxLength={512}
+                                   maxLength={1024}
                                    multiline
                                    numberOfLines={8}
                                    onChangeText = {(text)=>{this.setState({description:text})}}
                                    value={this.state.description}
-                        />
-                    </View>
-                    <View style={styles.inputView}>
-                        <Text style={styles.h2}>URL-АДРЕС</Text>
-                        <TextInput style={styles.input}
-                                   editable
-                                   onChangeText={(text)=>{this.setState({url:text})}}
-                                   value={this.state.url}
                         />
                     </View>
                     <Button
@@ -99,9 +89,9 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-        addOpportunity:(obj)=>dispatch({type:"ADD_OPPORTUNITY",value:obj}),
-        changeOpportunity:(obj)=>dispatch({type:"CHANGE_OPPORTUNITY",value:obj})
+        addPrepare:(obj)=>dispatch({type:"ADD_PREPARE_ZNO",value:obj}),
+        changePrepare:(obj)=>dispatch({type:"CHANGE_PREPARE_ZNO",value:obj})
     };
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(OpportunityEditScreen)
+export default connect(mapStateToProps,mapDispatchToProps)(EnrolleePreparingEditScreen);

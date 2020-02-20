@@ -1,6 +1,7 @@
 import React from 'react';
 import {Alert,View, Text, TextInput, ScrollView, TouchableOpacity} from 'react-native';
 import {Picker} from '@react-native-community/picker';
+import TextColorButtons from '../../components/TextColorButtons';
 import HOCBackSwipe from '../../hoc/GestureRightSwipe';
 import Button from '../../components/AttentionButton';
 import {generateKey} from '../../libs/methods';
@@ -11,9 +12,11 @@ import DatePicker from '@react-native-community/datetimepicker';
 class LifeDepartmentEditScreen extends React.Component{
     constructor(props){
         super(props);
+        let teachers = this.props.teachers;
+        if(teachers.length === 0)teachers.push({id:"0"});
         this.state = {
             id : generateKey(64),
-            teacher:this.props.teachers[0].id||"",
+            teacher:this.props.teachers[0].id||"0",
             title:"",
             date: new Date(),
             description:"",
@@ -73,7 +76,7 @@ class LifeDepartmentEditScreen extends React.Component{
                         <Text style={styles.h2}>ДИСЦИПЛІНА</Text>
                         <TextInput style={styles.input}
                                    editable
-                                   maxLength={80}
+                                   maxLength={128}
                                    onChangeText={(text)=>{this.setState({title:text})}}
                                    value={this.state.title}
                         />
@@ -85,7 +88,9 @@ class LifeDepartmentEditScreen extends React.Component{
                                 onValueChange={(itemValue,itemIndex)=>{this.setState({teacher:itemValue})}}
                         >
                             {this.props.teachers.map((currElem)=>{
-                                let teacherLabel = currElem.surname+" "+currElem.firstname+" "+currElem.middlename;
+                                let teacherLabel = "";
+                                if(currElem.id === "0") teacherLabel = "Порожньо";
+                                else teacherLabel = currElem.surname+" "+currElem.firstname+" "+currElem.middlename;
                                 return (
                                     <Picker.Item label={teacherLabel} value={currElem.id}/>
                                 )
@@ -94,6 +99,7 @@ class LifeDepartmentEditScreen extends React.Component{
                     </View>
                     <View style={styles.inputView}>
                         <Text style={styles.h2}>ОПИС ЗАВДАННЯ</Text>
+                        <TextColorButtons onChange={(text)=>{this.setState({description:text})}} text={this.state.description}/>
                         <TextInput style={styles.multiInput}
                                    editable
                                    maxLength={1024}

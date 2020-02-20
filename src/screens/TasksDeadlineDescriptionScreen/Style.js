@@ -30,7 +30,6 @@ export default StyleSheet.create({
     h2:{
         fontSize: 16,
         fontWeight: 'bold',
-        maxWidth:'80%'
     },
     p:{
         fontSize: 14,
@@ -38,7 +37,9 @@ export default StyleSheet.create({
         marginBottom: 24
     },
     info:{
-        marginLeft:16
+        marginLeft:16,
+
+        width:'80%'
     },
     date:{
         fontWeight: 'bold',

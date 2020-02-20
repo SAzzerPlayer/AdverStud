@@ -79,9 +79,12 @@ class MiningsScreen extends React.Component{
                                     <Text style={[styles.h2]}>{dictMonths[index]}</Text>
                                     }
                                     {currElem.map((mining)=>{
-
+                                        let teacher = this.props.teachers.find((element)=>{
+                                            if(element.id === mining.teacher) return true;
+                                            else return false;
+                                        });
                                         const onPressEdit = () => {
-                                            props.navigation.navigate("MiningEdit",{editMode:true,data:mining,course:this.state.course})
+                                            this.props.navigation.navigate("MiningEdit",{editMode:true,data:mining,course:this.state.course})
                                         };
 
                                         const onPressDelete = () => {
@@ -98,13 +101,11 @@ class MiningsScreen extends React.Component{
                                         const onPressTeacher = () => {
                                             this.props.navigation.navigate("TeacherInfo",
                                                 {
-                                                    data:this.props.teachers.find((element)=>{
-                                                        if(element.id === mining.teacher) return true;
-                                                        else return false;
-                                                    })
+                                                    data:teacher
                                                 });
                                         };
 
+                                        if(typeof mining.date === "string") mining.date = new Date(mining.date);
                                         let month = mining.date.getMonth()+1;
                                         if(month < 10) month = "0"+month;
                                         const date = mining.date.getDate()+"."+month+"."+mining.date.getFullYear();
@@ -121,6 +122,7 @@ class MiningsScreen extends React.Component{
                                                 onPressDelete={onPressDelete}
                                                 onPressEdit={onPressEdit}
                                                 adminMode={this.props.adminMode}
+                                                teacher = {teacher}
                                             />
                                         )
                                     })}

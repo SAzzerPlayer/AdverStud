@@ -1,9 +1,9 @@
 import React from 'react';
-import {View,Image,Text} from 'react-native';
+import {Animated, Image, Text} from 'react-native';
+import RNFS from 'react-native-fs';
 import {connect} from 'react-redux';
 import Firebase from 'firebase';
-import styles from './Style'
-
+import styles from './Style';
 
 const config = {
     apiKey: 'AIzaSyCN-82LRe04UT_2dLclQEVokxJnGZcVEQM',
@@ -17,65 +17,165 @@ const config = {
 class LoadingScreen extends React.Component{
     constructor(props){
         super(props);
-    }
-    async LoadLastData(isInitialize){
-        let database = null;
-        if(Firebase.apps.length === 0) {
-            let app = Firebase.initializeApp(config);
-            database = app.database();
+        this.state = {
+            opacity : new Animated.Value(1)
         }
-        else database = Firebase.database();
-        //load teachers
+    }
+
+    async loadCacheData(){
+        let file = await RNFS.readFile(RNFS.DocumentDirectoryPath+"/snapshot.json")
+            .catch((err)=>{
+                console.log(err);
+                return null;
+            });
+        if(file === null){
+            return null;
+        }
+        else return JSON.parse(file);
+    }
+
+    async saveCacheData(data){
+        RNFS.writeFile(RNFS.DocumentDirectoryPath+"/snapshot.json",JSON.stringify(data))
+            .then((result)=>{
+                console.log("Saving file is successfull!");
+            })
+            .catch((err)=>{
+                console.log(err);
+        })
+    }
+
+    async receiveNewData(database){
         let itemRef = database.ref("/");
-        itemRef.on("value", snapshot => {
+        return await itemRef.once("value", snapshot => {
             let data = snapshot.val();
-            if(data.teachers) this.props.loadTeachers(data.teachers.arr);
-            if(data.schedule) this.props.loadSchedule(data.schedule);
-            console.log(data.homework);
-            if(data.homework) this.props.loadHomeworks(data.homework);
+            console.log("launching");
+            return data;
         });
     }
-    async LoadCacheData(){
 
+    changeAppData(data){
+        if(data.teachers) this.props.loadTeachers(data.teachers.arr);
+        if(data.schedule) this.props.loadSchedule(data.schedule);
+        if(data.homework) this.props.loadHomeworks(data.homework);
+        if(data.departments) this.props.loadDepartments(data.departments);
+        if(data.opportunities) this.props.loadOpportunities(data.opportunities);
+        if(data.global) this.props.loadGlobal(data.global);
+        if(data.works) this.props.loadWorks(data.works);
+        if(data.enrollee) this.props.loadEnrollee(data.enrollee);
     }
-    async componentDidMount(){
-        if(!Firebase.apps.length){
-            console.log('connecting');
-            //await this.LoadLastData();
+
+    async checkInternetConnection (){
+        return await fetch("https://google.com")
+            .then((res)=>{return true;})
+            .catch((err)=>{return false})
+    }
+
+    navigateToNotFound(){
+        Animated.timing(
+            this.state.opacity,
+            {
+                duration: 600,
+                toValue: 0
+            }
+        ).start();
+        setTimeout(() => {
+            this.props.navigation.navigate("NotFound")
+        }, 1000);
+    }
+
+    navigateToMainScreen(){
+        Animated.timing(
+            this.state.opacity,
+            {
+                duration: 600,
+                toValue: 0
+            }
+        ).start();
+        setTimeout(() => {
+            this.props.navigation.navigate("Main")
+        }, 1000);
+    }
+
+    async initializeApplication(database, cacheData){
+        if(await this.checkInternetConnection()){
+            console.log("internet");
+            if(cacheData !== null){
+                let itemRef = database.ref("/snapshotAtDate");
+                itemRef.once("value", async snapshot => {
+                    let data = snapshot.val();
+                    console.log("SNAPSHOT DATE ", cacheData.global.snapshotAtDate);
+                    if (new Date(data) > new Date(cacheData.snapshotAtDate)) {
+                        let data = await this.receiveNewData(database);
+
+                        this.changeAppData(data);
+                        this.saveCacheData(data);
+                        this.navigateToMainScreen();
+                    }
+                    else{
+                        let cacheData = await this.loadCacheData();
+                        this.changeAppData(cacheData);
+                        this.navigateToMainScreen();
+                    }
+                });
+            }
+            else {
+                console.log("INTERNET CACHE");
+                let data = await this.receiveNewData(database);
+                this.changeAppData(data);
+                this.saveCacheData(data);
+                this.navigateToMainScreen();
+            }
         }
-
-        setTimeout(()=>{this.props.navigation.navigate("Menu")},1000);
-        //Connecting to the Firebase
-        /*let app = Firebase.initializeApp(config);
-        const database = app.database();
-        console.log(database);
-        database.ref("/items").push({
-            name:"test"
-        });
-        let itemRef = database.ref("/items");
-        itemRef.on("value", snapshot => {
-            let data = snapshot.val();
-            let items = Object.values(data);
-            console.log(items);
-        });*/
-
-        /*Loading data from the database*/
+        else{
+            if(cacheData !== null){
+                console.log("NO INTERNET CACHE");
+                this.changeAppData(cacheData);
+                this.navigateToMainScreen();
+            }
+            else{
+                console.log("NO INTERNET NO CACHE");
+                this.navigateToNotFound();
+            }
+        }
     }
-    render() {
+
+    async loadConfig(){
+        let config = await RNFS.readFile(RNFS.DocumentDirectoryPath+"/config.json")
+            .catch((err)=>null);
+        if(config !== null){
+            config = JSON.parse(config);
+            this.props.hideHint(config.hide_prompts);
+        }
+    }
+
+    componentDidMount(){
+        this.loadConfig();
+
+        //Initialize firebase database
+        let database = null;
+        if(Firebase.apps.length === 0) database = Firebase.initializeApp(config).database();
+        else database = Firebase.database();
+
+        this.loadCacheData(database)
+            .then(result=>{
+                this.initializeApplication(database, result);
+            });
+    }
+
+    render(){
         return (
-            <View style={styles.screen}>
+            <Animated.View style={[styles.screen,{opacity:this.state.opacity}]}>
                 <Text style={styles.h1}>Котику, почекай трошки</Text>
                 <Text style={styles.h2}>Твій додаток завантажується...</Text>
-                <Image style={styles.image} source={require("../../assets/images/catKing.png")}/>
-            </View>
-        );
+                <Image style={[styles.image]} source={require("../../assets/images/catKing.png")}/>
+            </Animated.View>
+        )
     }
 }
 
-
 function mapStateToProps(state){
     return {
-        ...state
+
     }
 }
 
@@ -89,8 +189,9 @@ function mapDispatchToProps(dispatch){
         loadDepartments:(obj)=>dispatch({type:"LOAD_DEPARTMENTS",value:obj}),
         loadEnrollee:(obj)=>dispatch({type:"LOAD_ENROLLEE",value:obj}),
         loadGlobal:(obj)=>dispatch({type:"LOAD_GLOBAL",value:obj}),
+        changeStudyBeginDate:(obj)=>dispatch({type:"CHANGE_STUDY_DATE_BEGIN",value:obj}),
+        hideHint:()=>dispatch({type:"HIDE"})
     }
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(LoadingScreen);
-

@@ -1,5 +1,6 @@
 import React from 'react';
 import {Alert,View, Text, Image, TextInput, ScrollView, TouchableOpacity} from 'react-native';
+import TextColorButtons from '../../components/TextColorButtons';
 import HOCBackSwipe from '../../hoc/GestureRightSwipe';
 import Button from '../../components/AttentionButton';
 import {generateKey} from '../../libs/methods';
@@ -25,6 +26,12 @@ class LifeDepartmentEditScreen extends React.Component{
     componentDidMount(){
         if(this.props.navigation.getParam("editMode")){
             this.setState({...this.props.navigation.getParam("data")});
+
+            if(typeof this.state.date === "string") {
+                let date = this.state.date;
+                date = new Date(date);
+                this.setState({date});
+            }
         }
     }
 
@@ -41,7 +48,7 @@ class LifeDepartmentEditScreen extends React.Component{
         const onPressPublish = () => {
 
             const validTitle = this.state.title.length > 0;
-            const validBrief = this.state.brief.length > 0;
+            const validBrief = this.state.lida.length > 0;
             const validDescription = this.state.description.length > 0;
 
             if(validTitle && validBrief && validDescription){
@@ -108,9 +115,10 @@ class LifeDepartmentEditScreen extends React.Component{
                     </View>
                     <View style={styles.inputView}>
                         <Text style={styles.h2}>ЛІД</Text>
+                        <TextColorButtons onChange={(text)=>{this.setState({lida:text})}} text={this.state.lida}/>
                         <TextInput style={styles.multiInput}
                                    editable
-                                   maxLength={128}
+                                   maxLength={256}
                                    multiline
                                    numberOfLines={8}
                                    onChangeText = {(text)=>{this.setState({lida:text})}}
@@ -119,9 +127,10 @@ class LifeDepartmentEditScreen extends React.Component{
                     </View>
                     <View style={styles.inputView}>
                         <Text style={styles.h2}>ОПИС НОВИНИ</Text>
+                        <TextColorButtons onChange={(text)=>{this.setState({description:text})}} text={this.state.description}/>
                         <TextInput style={styles.multiInput}
                                    editable
-                                   maxLength={128}
+                                   maxLength={1024}
                                    multiline
                                    numberOfLines={8}
                                    onChangeText = {(text)=>{this.setState({description:text})}}

@@ -25,7 +25,7 @@ class WorkListScreen extends React.Component{
         return(
             <HOCSwipeBack onSwipe={this.props.navigation.pop}>
             <View style={styles.screen}>
-                <ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={styles.header}>
                         <View style={styles.empty}/>
                         <Text style={styles.h1}>РОБОТА</Text>

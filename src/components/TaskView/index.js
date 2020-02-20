@@ -1,11 +1,13 @@
 import React from 'react';
 import {View,Text,TouchableOpacity, Image} from 'react-native';
+import {parseColorText} from '../../libs/methods';
 import Button from '../SmallAttentionButton';
 import styles from './Style';
 
 export default function(props){
 
     let date = props.data.date;
+    if(typeof date === "string") date = new Date(date);
     let month = date.getMonth()+1;
     if(month < 10) month = "0"+month;
     date = date.getDate()+"."+month+"."+date.getFullYear();
@@ -30,7 +32,7 @@ export default function(props){
             </View>}
             <View style={styles.view}>
                 <View style={styles.description}>
-                    <Text style={styles.p}>{props.index + ". "+props.data.title}</Text>
+                    <Text style={styles.p}>{props.index + ". "}{parseColorText(props.data.title)}</Text>
                     <Text style={styles.date}>{date}</Text>
                 </View>
                 <Button title={"ЗАВДАННЯ"} onPress={onPressNavigate}/>

@@ -10,7 +10,7 @@ import DatePicker from '@react-native-community/datetimepicker';
 import ImagePicker from "react-native-image-crop-picker";
 import RNFS from "react-native-fs";
 
-class EnrolleeQuestEditScreen extends React.Component{
+class EnrolleeContestsEditScreen extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -21,6 +21,7 @@ class EnrolleeQuestEditScreen extends React.Component{
             timePickerIsVisible:false,
             brief:"",
             description:"",
+            email:"",
             image:require("../../assets/images/noname.png")
         }
     }
@@ -28,7 +29,7 @@ class EnrolleeQuestEditScreen extends React.Component{
     componentDidMount(){
         if(this.props.navigation.getParam("editMode")){
             this.setState({...this.props.navigation.getParam("data")});
-            if(typeof this.state.date === "string"){
+            if(typeof date === "string"){
                 let date = this.state.date;
                 date = new Date(date);
                 this.setState({date});
@@ -63,8 +64,9 @@ class EnrolleeQuestEditScreen extends React.Component{
             const validTitle = this.state.title.length > 0;
             const validDescription = this.state.description.length > 0;
             const validBrief = this.state.brief.length > 0;
+            const validEmail = this.state.email.length > 0;
 
-            if(validTitle && validDescription && validBrief){
+            if(validTitle && validDescription && validBrief && validEmail){
                 let editMode = this.props.navigation.getParam("editMode");
                 const obj = {
                     id:this.state.id,
@@ -72,14 +74,15 @@ class EnrolleeQuestEditScreen extends React.Component{
                     date:this.state.date,
                     brief:this.state.brief,
                     description:this.state.description,
-                    image:this.state.image
+                    image:this.state.image,
+                    email:this.state.email
                 };
 
                 if(editMode){
-                    this.props.changeQuest(obj);
+                    this.props.changeContest(obj);
                 }
                 else{
-                    this.props.addQuest(obj);
+                    this.props.addContest(obj);
                 }
                 this.props.navigation.popToTop();
                 setTimeout(()=>{this.props.navigation.navigate("Menu")},100);
@@ -109,7 +112,7 @@ class EnrolleeQuestEditScreen extends React.Component{
             <HOCBackSwipe onSwipe={this.props.navigation.pop}>
             <View style={styles.screen}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <Text style={styles.h1}>КВЕСТ</Text>
+                    <Text style={styles.h1}>КОНКУРС</Text>
                     <View style={styles.inputView}>
                         <Text style={styles.h2}>НАЗВА</Text>
                         <TextInput style={styles.input}
@@ -143,6 +146,15 @@ class EnrolleeQuestEditScreen extends React.Component{
                                    numberOfLines={8}
                                    onChangeText = {(text)=>{this.setState({description:text})}}
                                    value={this.state.description}
+                        />
+                    </View>
+
+                    <View style={styles.inputView}>
+                        <Text style={styles.h2}>EMAIL</Text>
+                        <TextInput style={styles.input}
+                                   editable
+                                   onChangeText={(text)=>{this.setState({email:text})}}
+                                   value={this.state.email}
                         />
                     </View>
 
@@ -196,16 +208,15 @@ class EnrolleeQuestEditScreen extends React.Component{
 
 function mapStateToProps(state){
     return {
-        teachers:state.teacher.arr
     }
 }
 
 function mapDispatchToProps(dispatch){
     return {
-        addQuest:(obj)=>dispatch({type:"ADD_QUEST",value:obj}),
-        changeQuest:(obj)=>dispatch({type:"CHANGE_QUEST",value:obj})
+        addContest:(obj)=>dispatch({type:"ADD_CONTEST",value:obj}),
+        changeContest:(obj)=>dispatch({type:"CHANGE_CONTEST",value:obj})
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(EnrolleeQuestEditScreen);
+export default connect(mapStateToProps,mapDispatchToProps)(EnrolleeContestsEditScreen);
 

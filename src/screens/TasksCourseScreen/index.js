@@ -33,7 +33,11 @@ class TasksCourseScreen extends React.Component{
         const course = this.props.navigation.getParam("course")+" КУРС";
 
         const onPressLink = () => {
-            Linking.openURL(this.state.link);
+            let regex = /^(https?:\/\/)?([\w\.]+)\.([a-z]{2,6}\.?)(\/[\w\.]*)*\/?$/;
+            if(regex.test(this.state.link)) {
+                Linking.openURL(this.state.link);
+            }
+            else this.props.navigation.navigate("NotFound");
         };
 
         const onPressChangeLink = () => {

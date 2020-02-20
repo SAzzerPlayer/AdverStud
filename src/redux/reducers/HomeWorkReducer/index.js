@@ -69,12 +69,23 @@ export default function(state=initialState,action){
                 ...courses
             }
         }
-        case "LOAD_HOMEWORK":{
+        case "LOAD_HOMEWORKS":{
             let courses = state;
-            for(let i = 1; i < 6;i++){
-                let data = action.value["course"+i];
-                if(data.groups) courses["course"+i].groups = data.groups;
-                if(data.link) courses["course"+i].link = data.link;
+            console.log(state);
+            for(let i = 1; i < 6; i++){
+                let groups = action.value["course"+i].groups;
+                let link = action.value["course"+i].link;
+                if(groups){
+                    for(let groupKey of Object.keys(groups)){
+                        for(let homework of groups[groupKey]){
+                            homework.date = new Date(homework.date);
+                        }
+                    }
+                    courses["course"+i].groups = groups;
+                }
+                if(link){
+                    courses["course"+i].link = link;
+                }
             }
             return {
                 ...courses

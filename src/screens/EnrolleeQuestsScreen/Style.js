@@ -16,6 +16,11 @@ export default StyleSheet.create({
         fontWeight: 'bold',
         textAlign:"center",
     },
+    h2:{
+        fontSize:16,
+        fontWeight: 'bold',
+        textAlign: 'center'
+    },
     header:{
         flexDirection:'row',
         justifyContent: 'space-between',

@@ -4,6 +4,7 @@ import styles from './Style';
 
 export default function(props){
     let date = props.data.date;
+    if(typeof date === "string") date = new Date(date);
     let month = date.getMonth()+1;
     if(month < 10){
         month = "0"+month;

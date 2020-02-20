@@ -26,7 +26,7 @@ class TeachersScreen extends React.Component{
             <View style={styles.screen}>
                 <View style={styles.header}>
                     <View style={styles.empty}/>
-                    <Text style={styles.h1}>Викладачі</Text>
+                    <Text style={styles.h1}>ВИКЛАДАЧІ</Text>
                     {this.props.adminMode && <TouchableOpacity style={styles.add}
                         onPress={onPressAdd}
                     >

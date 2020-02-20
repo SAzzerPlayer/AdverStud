@@ -23,5 +23,12 @@ export default StyleSheet.create({
         width:24,
         height:24,
         tintColor: 'gray'
+    },
+    search:{
+        width:32,
+        height:32,
+        borderRadius:16,
+        justifyContent:"center",
+        alignItems:"center"
     }
 })

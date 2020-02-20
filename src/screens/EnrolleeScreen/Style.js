@@ -38,5 +38,8 @@ export default StyleSheet.create({
         marginBottom:24,
         paddingRight:24,
         paddingLeft:24
+    },
+    empty:{
+        height:200
     }
 })

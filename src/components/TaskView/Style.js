@@ -14,7 +14,8 @@ export default StyleSheet.create({
     },
     p:{
         fontSize: 14,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        width:"60%"
     },
     date:{
         color: 'red',

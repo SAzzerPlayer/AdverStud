@@ -1,5 +1,6 @@
 import React from 'react';
 import {View,Text,ScrollView,TouchableOpacity,Image} from 'react-native';
+import {parseColorText} from '../../libs/methods';
 import {connect} from 'react-redux';
 import {Picker} from '@react-native-community/picker';
 import styles from './Style';
@@ -77,23 +78,23 @@ class WeeklyScheduleScreen extends React.Component{
                     {new Date().getDay() !== 1 &&
                     <Text style={[styles.h2]}>ПОНЕДІЛОК</Text>}
 
-                    <Text style={styles.p}>{this.state.schedule.monday}</Text>
+                    <Text style={styles.p}>{parseColorText(this.state.schedule.monday)}</Text>
                     {new Date().getDay() === 2 && <Text style={[styles.h2,styles.active]}>ВІВТОРОК</Text>}
                     {new Date().getDay() !== 2 && <Text style={[styles.h2]}>ВІВТОРОК</Text>}
 
-                    <Text style={styles.p}>{this.state.schedule.tuesday}</Text>
+                    <Text style={styles.p}>{parseColorText(this.state.schedule.tuesday)}</Text>
                     {new Date().getDay() === 3 && <Text style={[styles.h2,styles.active]}>СЕРЕДА</Text>}
                     {new Date().getDay() !== 3 && <Text style={[styles.h2]}>СЕРЕДА</Text>}
 
-                    <Text style={styles.p}>{this.state.schedule.wednesday}</Text>
+                    <Text style={styles.p}>{parseColorText(this.state.schedule.wednesday)}</Text>
                     {new Date().getDay() === 4 && <Text style={[styles.h2,styles.active]}>ЧЕТВЕР</Text>}
                     {new Date().getDay() !== 4 && <Text style={[styles.h2]}>ЧЕТВЕР</Text>}
 
-                    <Text style={styles.p}>{this.state.schedule.thursday}</Text>
+                    <Text style={styles.p}>{parseColorText(this.state.schedule.thursday)}</Text>
                     {new Date().getDay() === 5 && <Text style={[styles.h2,styles.active]}>П'ЯТНИЦЯ</Text>}
                     {new Date().getDay() !== 5 && <Text style={[styles.h2]}>П'ЯТНИЦЯ</Text>}
 
-                    <Text style={styles.p}>{this.state.schedule.friday}</Text>
+                    <Text style={styles.p}>{parseColorText(this.state.schedule.friday)}</Text>
                 </ScrollView>
             </View>
             </HOCSwipeBack>

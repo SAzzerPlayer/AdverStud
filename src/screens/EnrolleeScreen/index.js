@@ -11,19 +11,20 @@ class EnrolleeScreen extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            link:"https://google.com",
+            link:this.props.link,
             isChangingLink:false,
             title:"ЗМІНИТИ ПОСИЛАННЯ"
         }
     }
 
     render(){
-        const onPressNavigate = (routeName) => {
-            this.props.navigation.navigate(routeName);
-        };
 
         const onPressLink = () => {
-            Linking.openURL(this.state.link);
+            let regex = /^(https?:\/\/)?([\w\.]+)\.([a-z]{2,6}\.?)(\/[\w\.]*)*\/?$/;
+            if(regex.test(this.state.link)) {
+                Linking.openURL(this.state.link);
+            }
+            else this.props.navigation.navigate("NotFound");
         };
 
         const onPressChangeLink = () => {
@@ -32,13 +33,14 @@ class EnrolleeScreen extends React.Component{
                     isChangingLink:true,
                     title:"OK"
                 });
-                this.props.changeLink(this.state.link);
+
             }
             else{
                 this.setState({
                     isChangingLink:false,
                     title:"ЗМІНИТИ ПОСИЛАННЯ"
-                })
+                });
+                this.props.changeLink(this.state.link);
             }
         };
 
@@ -46,9 +48,24 @@ class EnrolleeScreen extends React.Component{
             <HOCSwipeBack onSwipe={this.props.navigation.pop}>
                 <View style={styles.screen}>
                     <Text style={styles.h1}>АБІТУРІЄНТАМ</Text>
-                    <Button title={"ПІДГОТОВКА ДО ЗНО"} onPress={()=>onPressNavigate("EnrolleePreparing")}/>
-                    <Button title={"КВЕСТИ"} onPress={()=>onPressNavigate("EnrolleeQuests")}/>
-                    <Button title={"КОНКУРСИ"} onPress={()=>onPressNavigate("EnrolleeContests")}/>
+                    <Button title={"ПІДГОТОВКА ДО ЗНО"} onPress={()=>{
+                        if(this.props.prepares.length === 0 && !this.props.adminMode){
+                            this.props.navigation.navigate("NotFound");
+                        }
+                        else this.props.navigation.navigate("EnrolleePreparing");
+                    }}/>
+                    <Button title={"КВЕСТИ"} onPress={()=>{
+                        if(this.props.quests.length === 0 && !this.props.adminMode){
+                            this.props.navigation.navigate("NotFound");
+                        }
+                        else this.props.navigation.navigate("EnrolleeQuests");
+                    }}/>
+                    <Button title={"КОНКУРСИ"} onPress={()=>{
+                        if(this.props.contests.length === 0 && !this.props.adminMode){
+                            this.props.navigation.navigate("NotFound");
+                        }
+                        else this.props.navigation.navigate("EnrolleeContests");
+                    }}/>
                     <Button title={"СТАТИ АБІТУРІЄНТОМ"} onPress={onPressLink}/>
                     {this.props.adminMode && <OutlinedButton title={this.state.title} onPress={onPressChangeLink}/>}
                     {this.props.adminMode && <TextInput
@@ -56,8 +73,9 @@ class EnrolleeScreen extends React.Component{
                         style={styles.input}
                         value={this.state.link}
                         onChangeText={(text)=>{this.setState({link:text})}}
-                        placeholder={"Назва групи"}
+                        placeholder={"https://..."}
                     />}
+                    <View style={styles.empty}/>
                 </View>
             </HOCSwipeBack>
         );
@@ -66,13 +84,17 @@ class EnrolleeScreen extends React.Component{
 
 function mapStateToProps(state){
     return {
-        adminMode:state.global.adminMode
+        adminMode:state.global.adminMode,
+        contests: state.enrollee.contests,
+        quests: state.enrollee.quests,
+        prepares: state.enrollee.prepareZNO,
+        link: state.enrollee.link
     };
 }
 
 function mapDispatchToProps(dispatch){
     return {
-        changeLink:(link)=>{dispatch({type:"CHANGE_BECOMING_LINK",value:link})}
+        changeLink:(link)=>{dispatch({type:"CHANGE_ENROLLEE_LINK",value:link})}
     };
 }
 

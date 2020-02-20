@@ -10,7 +10,7 @@ import WorkListStackNavigator from './WorkListStackNavigator';
 import TasksStackNavigator from './TasksStackNavigator';
 import EnrolleeStackNavigator from './EnrolleeStackNavigator';
 import OpportunityStackNavigator from './OpportunityStackNavigator';
-
+import SearchResultsStackNavigator from './SearchResultsStackNavigator';
 
 
 export default createStackNavigator({
@@ -23,7 +23,8 @@ export default createStackNavigator({
         "LifeDepartment":LifeDepartmentStackNavigator,
         "Works":WorkListStackNavigator,
         "Tasks":TasksStackNavigator,
-        "Enrollee":EnrolleeStackNavigator
+        "Enrollee":EnrolleeStackNavigator,
+        "Search":SearchResultsStackNavigator
     },
     {
         navigationOptions:{

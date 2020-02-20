@@ -25,7 +25,7 @@ class OpportunitiesScreen extends React.Component{
         return(
             <HOCSwipeBack onSwipe={this.props.navigation.pop}>
             <View style={styles.screen}>
-                <ScrollView style={styles.scroll}>
+                <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
                     <View style={styles.header}>
                         <View style={styles.empty}/>
                         <Text style={styles.h1}>МОЖЛИВОСТІ</Text>
