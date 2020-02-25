@@ -54,14 +54,23 @@ class LoadingScreen extends React.Component{
     }
 
     changeAppData(data){
+        console.log(1);
         if(data.teachers) this.props.loadTeachers(data.teachers.arr);
+        console.log(2);
         if(data.schedule) this.props.loadSchedule(data.schedule);
+        console.log(3);
         if(data.homework) this.props.loadHomeworks(data.homework);
+        console.log(4);
         if(data.departments) this.props.loadDepartments(data.departments);
+        console.log(5);
         if(data.opportunities) this.props.loadOpportunities(data.opportunities);
+        console.log(6);
         if(data.global) this.props.loadGlobal(data.global);
+        console.log(7);
         if(data.works) this.props.loadWorks(data.works);
+        console.log(8);
         if(data.enrollee) this.props.loadEnrollee(data.enrollee);
+        console.log(9);
     }
 
     async checkInternetConnection (){
@@ -107,13 +116,18 @@ class LoadingScreen extends React.Component{
                     if (new Date(data) > new Date(cacheData.snapshotAtDate)) {
                         let data = await this.receiveNewData(database);
 
-                        this.changeAppData(data);
-                        this.saveCacheData(data);
+                        //let cacheData = await this.loadCacheData();
+                        //this.changeAppData(cacheData);
+                        console.log('new data');
+                        await this.saveCacheData(data);
+                        let cacheData = await this.loadCacheData();
+                        console.log(data);
+                        await this.changeAppData(cacheData);
                         this.navigateToMainScreen();
                     }
                     else{
                         let cacheData = await this.loadCacheData();
-                        this.changeAppData(cacheData);
+                        await this.changeAppData(cacheData);
                         this.navigateToMainScreen();
                     }
                 });
@@ -121,15 +135,16 @@ class LoadingScreen extends React.Component{
             else {
                 console.log("INTERNET CACHE");
                 let data = await this.receiveNewData(database);
-                this.changeAppData(data);
-                this.saveCacheData(data);
+                await this.saveCacheData(data);
+                let cacheData = await this.loadCacheData();
+                await this.changeAppData(cacheData);
                 this.navigateToMainScreen();
             }
         }
         else{
             if(cacheData !== null){
                 console.log("NO INTERNET CACHE");
-                this.changeAppData(cacheData);
+                await this.changeAppData(cacheData);
                 this.navigateToMainScreen();
             }
             else{

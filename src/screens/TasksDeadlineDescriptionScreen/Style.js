@@ -38,8 +38,7 @@ export default StyleSheet.create({
     },
     info:{
         marginLeft:16,
-
-        width:'80%'
+        width:'50%'
     },
     date:{
         fontWeight: 'bold',

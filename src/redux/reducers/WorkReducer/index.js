@@ -5,6 +5,17 @@ const initialState = {
     arr:[]
 };
 
+function ObjectToArray(obj){
+    if(Array.isArray(obj)) return obj;
+    else {
+        let arr = [];
+        for (let key of Object.keys(obj)) {
+            arr.push(obj[key]);
+        }
+        return arr;
+    }
+}
+
 export default function(state=initialState,action){
     switch(action.type){
         case "ADD_WORK":{
@@ -41,7 +52,7 @@ export default function(state=initialState,action){
         }
         case "LOAD_WORKS":{
             let arr = action.value.arr;
-            state.arr = arr;
+            state.arr = ObjectToArray(arr);
             return {
                 ...state
             }

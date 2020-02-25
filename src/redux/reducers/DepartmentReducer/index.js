@@ -5,6 +5,17 @@ const initialState = {
     arr:[]
 };
 
+function ObjectToArray(obj){
+    if(Array.isArray(obj)) return obj;
+    else {
+        let arr = [];
+        for (let key of Object.keys(obj)) {
+            arr.push(obj[key]);
+        }
+        return arr;
+    }
+}
+
 export default function(state=initialState,action){
     switch(action.type){
         case "ADD_DEPARTMENT":{
@@ -40,7 +51,7 @@ export default function(state=initialState,action){
             }
         }
         case "LOAD_DEPARTMENTS":{
-            let arr = action.value.arr;
+            let arr = ObjectToArray(action.value.arr);
             for(let elem of arr){
                 elem.date = new Date(elem.date);
             }

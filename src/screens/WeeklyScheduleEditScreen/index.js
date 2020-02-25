@@ -80,8 +80,6 @@ class WeeklyScheduleEditScreen extends React.Component{
                                    multiline
                                    numberOfLines={8}
                                    onChangeText = {(text)=>{this.setState({tuesday:text})}}
-                                   onBlur={()=>{console.log("I'm blurreed")}}
-                                   blurOnSubmit={true}
                                    value={this.state.tuesday}
                         />
                     </View>

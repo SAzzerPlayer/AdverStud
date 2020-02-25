@@ -4,6 +4,17 @@ const initialState = {
     arr : []
 };
 
+function ObjectToArray(obj){
+    if(Array.isArray(obj)) return obj;
+    else {
+        let arr = [];
+        for (let key of Object.keys(obj)) {
+            arr.push(obj[key]);
+        }
+        return arr;
+    }
+}
+
 export default function(state=initialState,action){
     switch(action.type){
         case "ADD_OPPORTUNITY":{
@@ -43,7 +54,7 @@ export default function(state=initialState,action){
         case "LOAD_OPPORTUNITIES":{
             console.log(action.value);
             let arr = action.value.arr;
-            state.arr = arr;
+            state.arr = ObjectToArray(arr);
             return {
                 ...state
             }

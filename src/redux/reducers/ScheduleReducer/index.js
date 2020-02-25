@@ -9,6 +9,17 @@ const initialState = {
     course5:{groups:{},minings:[],sessions:[]}
 };
 
+function ObjectToArray(obj){
+    if(Array.isArray(obj)) return obj;
+    else {
+        let arr = [];
+        for (let key of Object.keys(obj)) {
+            arr.push(obj[key]);
+        }
+        return arr;
+    }
+}
+
 export default function(state=initialState,action){
     switch(action.type){
         case "CHANGE_WEEKLY_SCHEDULE":{
@@ -38,7 +49,9 @@ export default function(state=initialState,action){
                     wednesday: "Порожньо",
                     thursday: "Порожньо",
                     friday: "Порожньо"
-                }
+                },
+                minings: [],
+                sessions: []
             };
             return {
                 ...courses
@@ -125,17 +138,19 @@ export default function(state=initialState,action){
         }
 
         case "LOAD_SCHEDULE":{
-            console.log(action.value);
             let schedule = action.value;
             for(let i=1;i<6;i++){
                 if(schedule["course"+i]) {
                     if (schedule["course" + i].minings) {
+                        schedule["course"+i].minings = ObjectToArray(schedule["course"+i].minings);
                         state["course" + i].minings = schedule["course" + i].minings;
                         for(let elem of state["course"+i].minings){
+                            console.log(typeof elem.date);
                             elem.date = new Date(elem.date);
                         }
                     }
                     if (schedule["course" + i].sessions) {
+                        schedule["course"+i].sessions = ObjectToArray(schedule["course"+i].sessions);
                         state["course" + i].sessions = schedule["course" + i].sessions;
                         for(let elem of state["course"+i].sessions){
                             elem.date = new Date(elem.date);

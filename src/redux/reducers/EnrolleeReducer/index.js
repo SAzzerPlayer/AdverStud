@@ -14,6 +14,17 @@ const initialState = {
     link:""
 };
 
+function ObjectToArray(obj){
+    if(Array.isArray(obj)) return obj;
+    else {
+        let arr = [];
+        for (let key of Object.keys(obj)) {
+            arr.push(obj[key]);
+        }
+        return arr;
+    }
+}
+
 export default function(state=initialState,action){
     switch(action.type){
         case "ADD_QUEST":{
@@ -122,18 +133,20 @@ export default function(state=initialState,action){
         case "LOAD_ENROLLEE":{
             let data = action.value;
             if(data.quests){
-                for(let element of data.quests){
+                let quests = ObjectToArray(data.quests);
+                for(let element of quests){
                     element.date = new Date(element.date);
                 }
-                state.quests = data.quests;
+                state.quests = quests;
             }
             if(data.contests){
-                for(let element of data.contests){
+                let contests = ObjectToArray(data.contests);
+                for(let element of contests){
                     element.date = new Date(element.date);
                 }
-                state.contests = data.contests;
+                state.contests = contests;
             }
-            if(data.prepareZNO) state.prepareZNO = data.prepareZNO;
+            if(data.prepareZNO) state.prepareZNO = ObjectToArray(data.prepareZNO);
             if(data.link) state.link = data.link;
             return {
                 ...state

@@ -12,6 +12,17 @@ const initialState = {
 
 // action => type, value, course
 
+function ObjectToArray(obj){
+    if(Array.isArray(obj)) return obj;
+    else {
+        let arr = [];
+        for (let key of Object.keys(obj)) {
+            arr.push(obj[key]);
+        }
+        return arr;
+    }
+}
+
 export default function(state=initialState,action){
     switch(action.type){
         case "ADD_HOMEWORK":{
@@ -71,15 +82,16 @@ export default function(state=initialState,action){
         }
         case "LOAD_HOMEWORKS":{
             let courses = state;
-            console.log(state);
             for(let i = 1; i < 6; i++){
                 let groups = action.value["course"+i].groups;
                 let link = action.value["course"+i].link;
                 if(groups){
                     for(let groupKey of Object.keys(groups)){
-                        for(let homework of groups[groupKey]){
+                        let group = ObjectToArray(groups[groupKey]);
+                        for(let homework of group){
                             homework.date = new Date(homework.date);
                         }
+                        groups[groupKey] = group;
                     }
                     courses["course"+i].groups = groups;
                 }
