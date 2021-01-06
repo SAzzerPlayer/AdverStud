@@ -6,7 +6,7 @@ import styles from './Style';
 export default function (props) {
 
     const onPressLink = () => {
-        let regex = /^(https?:\/\/)?([\w\.]+)\.([a-z]{2,6}\.?)(\/[\w\.]*)*\/?$/;
+        let regex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
         if(regex.test(props.data.link)) {
             Linking.openURL(props.data.link);
         }

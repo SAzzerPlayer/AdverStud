@@ -7,6 +7,12 @@ import styles from './Style';
 
 import HOCSwipeBack from '../../hoc/GestureRightSwipe';
 
+function sortByDate(elem1, elem2){
+    if(elem1.date > elem2.date) return 1;
+    else if(elem1.date < elem2.date) return -1;
+    else return 0;
+}
+
 class TasksDeadlineScreen extends React.Component{
     constructor(props){
         super(props);
@@ -14,6 +20,7 @@ class TasksDeadlineScreen extends React.Component{
         let groups = Object.keys(this.props["course"+course].groups);
         console.log(this.props["course"+course]);
         let homeworks = this.props["course"+course].groups[groups[0]];
+
         this.state = {
             week:this.props.navigation.getParam("week"),
             groups: groups,
@@ -82,11 +89,20 @@ class TasksDeadlineScreen extends React.Component{
                                 ]
                             );
                         };
+                        const onPressEdit = () => {
+                            this.props.navigation.navigate("TaskDeadlineEdit",{
+                                editMode:true,
+                                data:currElem,
+                                course:this.state.course,
+                                group:this.state.pickerValue});
+
+                        };
                         return (
                             <TaskView
                                 data={currElem}
                                 navigation={this.props.navigation}
                                 onPressDelete={onPressDelete}
+                                onPressEdit={onPressEdit}
                                 course = {this.state.course}
                                 group = {this.state.pickerValue}
                                 key={index}

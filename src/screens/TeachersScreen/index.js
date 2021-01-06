@@ -24,6 +24,7 @@ class TeachersScreen extends React.Component{
         return(
             <HOCSwipeBack onSwipe={this.props.navigation.pop}>
             <View style={styles.screen}>
+                <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.header}>
                     <View style={styles.empty}/>
                     <Text style={styles.h1}>ВИКЛАДАЧІ</Text>
@@ -35,7 +36,7 @@ class TeachersScreen extends React.Component{
                     {!this.props.adminMode && <View style={styles.empty}/>}
                 </View>
                 <Text style={styles.h2}>Кафедра реклами та PR</Text>
-                <ScrollView>
+                <View>
                     {this.props.teachers.map((currElem,index)=>{
                         return <TeacherView key={index}
                                             data = {currElem}
@@ -45,6 +46,7 @@ class TeachersScreen extends React.Component{
                         />
                     })}
                     {this.props.teachers.length===0 && <Text style={styles.h2}>Нажаль, дані відсутні</Text>}
+                </View>
                 </ScrollView>
             </View>
             </HOCSwipeBack>

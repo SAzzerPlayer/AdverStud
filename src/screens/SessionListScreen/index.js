@@ -5,14 +5,19 @@ import ListItem from '../../components/RecordListItem';
 import styles from './Style';
 
 import HOCSwipeBack from '../../hoc/GestureRightSwipe';
+import {Picker} from "@react-native-community/picker";
 
 class SessionListScreen extends React.Component{
     constructor(props){
         super(props);
         let course = this.props.navigation.getParam("course");
+        let groups = Object.keys(this.props["course"+course].groups);
+        console.log(groups);
         this.state = {
-            sessions : this.props["course"+course],
-            course : course
+            sessions : this.props["course"+course].groups[groups[0]].sessions || [],
+            course : course,
+            groups : groups,
+            pickerValue : groups[0]
         }
     }
     componentDidMount(){
@@ -24,7 +29,22 @@ class SessionListScreen extends React.Component{
     render(){
 
         const onPressAdd = () => {
-            this.props.navigation.navigate("SessionEdit",{editMode:false,course:this.state.course});
+            this.props.navigation.navigate("SessionEdit",{
+                editMode:false,
+                course:this.state.course,
+                group:this.state.pickerValue});
+        };
+
+        const PickerItems = this.state.groups.map((currElem,index)=>{
+            return <Picker.Item label={currElem} value={currElem}/>
+        });
+
+        const onChangePicker = (itemValue,itemIndex)=>{
+            let schedule = this.props["course"+this.state.course].groups[itemValue];
+            this.setState({
+                pickerValue:itemValue,
+                sessions : schedule.sessions
+            })
         };
 
         const sortByDate = (elem1,elem2)=>{
@@ -45,6 +65,19 @@ class SessionListScreen extends React.Component{
                         </TouchableOpacity>}
                         {!this.props.adminMode && <View style={styles.empty}/>}
                     </View>
+                    <View style={styles.groupView}>
+                        <View style={styles.empty}/>
+                        <Text style={styles.title}>{this.state.pickerValue}</Text>
+                        <Picker
+                            selectedValue={this.state.pickerValue}
+                            style={styles.picker}
+                            itemStyle={styles.p}
+                            onValueChange={onChangePicker}
+                            mode={'dialog'}
+                        >
+                            {PickerItems}
+                        </Picker>
+                    </View>
                     {this.state.sessions.sort(sortByDate).map((currElem)=>{
                         let teacher = this.props.teachers.find((element)=>{
                             if(element.id === currElem.teacher) return true;
@@ -62,14 +95,18 @@ class SessionListScreen extends React.Component{
                             [
                                 {text:"Ні",onPress:()=>{}},
                                 {text:"Так",onPress:()=>{
-                                    this.props.deleteSession(currElem,this.state.course);
+                                    this.props.deleteSession(currElem,this.state.course,this.state.pickerValue);
                                     this.props.navigation.pop();
                                     }}
                             ])
                         };
 
                         const onPressEdit = () => {
-                            this.props.navigation.navigate("SessionEdit",{editMode:true,data:currElem,course:this.state.course})
+                            this.props.navigation.navigate("SessionEdit",{
+                                editMode:true,
+                                data:currElem,
+                                course:this.state.course,
+                                group:this.state.pickerValue})
                         };
 
                         let month = currElem.date.getMonth()+1;
@@ -103,11 +140,11 @@ class SessionListScreen extends React.Component{
 
 function mapStateToProps(state){
     return {
-        course1:state.schedule.course1.sessions,
-        course2:state.schedule.course2.sessions,
-        course3:state.schedule.course3.sessions,
-        course4:state.schedule.course4.sessions,
-        course5:state.schedule.course5.sessions,
+        course1:state.schedule.course1,
+        course2:state.schedule.course2,
+        course3:state.schedule.course3,
+        course4:state.schedule.course4,
+        course5:state.schedule.course5,
         teachers:state.teacher.arr,
         adminMode:state.global.adminMode
     }
@@ -115,7 +152,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-        deleteSession:(obj,course)=>dispatch({type:"DELETE_SESSION",value:obj,course})
+        deleteSession:(obj,course,group)=>dispatch({type:"DELETE_SESSION",value:obj,course,group})
     }
 }
 

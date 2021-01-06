@@ -12,7 +12,6 @@ export default StyleSheet.create({
     image:{
         width:128,
         height:128,
-        backgroundColor: 'gray',
         borderRadius: 32
     },
     teacherInfo:{

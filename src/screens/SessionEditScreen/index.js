@@ -13,6 +13,7 @@ class SessionEditScreen extends React.Component{
     constructor(props){
         super(props);
         let teachers = this.props.teachers;
+        let group = this.props.navigation.getParam("group");
         if(teachers.length === 0) teachers.push({id:"0"});
         this.state = {
             id : generateKey(64),
@@ -20,7 +21,8 @@ class SessionEditScreen extends React.Component{
             title:"",
             date: new Date(),
             datePickerIsVisible:false,
-            timePickerIsVisible:false
+            timePickerIsVisible:false,
+            group:group
         }
     }
 
@@ -67,10 +69,10 @@ class SessionEditScreen extends React.Component{
                 };
 
                 if(editMode){
-                    this.props.changeSession(obj,course);
+                    this.props.changeSession(obj, course, this.state.group);
                 }
                 else{
-                    this.props.addSession(obj,course);
+                    this.props.addSession(obj, course, this.state.group);
                 }
                 this.props.navigation.popToTop();
                 setTimeout(()=>{this.props.navigation.navigate("Menu")},100);
@@ -84,6 +86,7 @@ class SessionEditScreen extends React.Component{
             <View style={styles.screen}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <Text style={styles.h1}>CЕСІЯ</Text>
+                    <Text style={[styles.h1,{marginTop:0}]}>{this.state.group.toUpperCase()}</Text>
                     <View style={styles.inputView}>
                         <Text style={styles.h2}>ДИСЦИПЛІНА</Text>
                         <TextColorButtons onChange={(text)=>{this.setState({title:text})}} text={this.state.title}/>
@@ -162,8 +165,8 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-        addSession:(obj,course)=>dispatch({type:"ADD_SESSION",value:obj,course}),
-        changeSession:(obj,course)=>dispatch({type:"CHANGE_SESSION",value:obj,course})
+        addSession:(obj,course,group)=>dispatch({type:"ADD_SESSION",value:obj,course,group}),
+        changeSession:(obj,course,group)=>dispatch({type:"CHANGE_SESSION",value:obj,course,group})
     }
 }
 

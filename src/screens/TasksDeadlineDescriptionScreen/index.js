@@ -24,9 +24,12 @@ class TasksDeadlineDescriptionScreen extends React.Component{
         let date = data.date;
         let month = date.getMonth()+1;
         if(month < 10) month = "0"+month;
+
+        let defaultImage = require("../../assets/images/noname.png");
+
         this.state = {
             title: data.title,
-            image: teacher.image,
+            image: teacher.image||defaultImage,
             teacherName: teacher.surname+" "+teacher.firstname+" "+teacher.middlename,
             date: date.getDate()+"."+month+"."+date.getFullYear(),
             description:data.description,
@@ -35,7 +38,9 @@ class TasksDeadlineDescriptionScreen extends React.Component{
     }
     render(){
         const onPressLink = () => {
-            let regex = /^(https?:\/\/)?([\w\.]+)\.([a-z]{2,6}\.?)(\/[\w\.]*)*\/?$/;
+            let regex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
+            console.log(this.state.link);
+            console.log(regex.test(this.state.link));
             if(regex.test(this.state.link)) {
                 Linking.openURL(this.state.link);
             }

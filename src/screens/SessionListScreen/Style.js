@@ -78,6 +78,5 @@ export default StyleSheet.create({
     addText:{
         color: 'green',
         fontWeight: '100'
-    },
-
+    }
 })

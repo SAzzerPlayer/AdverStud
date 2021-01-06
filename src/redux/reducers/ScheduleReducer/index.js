@@ -69,7 +69,7 @@ export default function(state=initialState,action){
         case "ADD_SESSION":{
             let courses = state;
             console.log(action.value);
-            let sessions = courses["course"+action.course].sessions;
+            let sessions = courses["course"+action.course].groups[action.group].sessions;
             sessions.push(action.value);
             return{
                 ...courses
@@ -78,7 +78,7 @@ export default function(state=initialState,action){
 
         case "CHANGE_SESSION":{
             let courses = state;
-            let sessions = courses["course"+action.course].sessions;
+            let sessions = courses["course"+action.course].groups[action.group].sessions;
             let obj = sessions.find((currElem)=>{
                 if(currElem.id === action.value.id) return true;
                 else return false;
@@ -91,7 +91,7 @@ export default function(state=initialState,action){
 
         case "DELETE_SESSION":{
             let courses = state;
-            let sessions = courses["course"+action.course].sessions;
+            let sessions = courses["course"+action.course].groups[action.group].sessions;
             let obj = sessions.find((currElem)=>{
                 if(currElem.id === action.value.id) return true;
                 else return false;
@@ -104,7 +104,7 @@ export default function(state=initialState,action){
 
         case "ADD_MINING":{
             let courses = state;
-            let minings = state["course"+action.course].minings;
+            let minings = state["course"+action.course].groups[action.group].minings;
             minings.push(action.value);
             return {
                 ...courses
@@ -113,7 +113,7 @@ export default function(state=initialState,action){
 
         case "CHANGE_MINING":{
             let courses = state;
-            let minings = courses["course"+action.course].minings;
+            let minings = courses["course"+action.course].groups[action.group].minings;
             let obj = minings.find((currElem)=>{
                 if(currElem.id === action.value.id) return true;
                 else return false;
@@ -126,7 +126,7 @@ export default function(state=initialState,action){
 
         case "DELETE_MINING":{
             let courses = state;
-            let minings = courses["course"+action.course].minings;
+            let minings = courses["course"+action.course].groups[action.group].minings;
             let obj = minings.find((currElem)=>{
                 if(currElem.id === action.value.id) return true;
                 else return false;
@@ -158,6 +158,23 @@ export default function(state=initialState,action){
                     }
                     if (schedule["course" + i].groups) {
                         state["course" + i].groups = schedule["course" + i].groups;
+                        for(let group of Object.keys(state["course"+i].groups)){
+                            let groupObj = state["course"+i].groups[group];
+                            if(!groupObj.sessions) groupObj.sessions = [];
+                            else{
+                                groupObj.sessions = ObjectToArray(groupObj.sessions);
+                                for(let elem of groupObj.sessions){
+                                    elem.date = new Date(elem.date);
+                                }
+                            }
+                            if(!groupObj.minings) groupObj.minings = [];
+                            else{
+                                groupObj.minings = ObjectToArray(groupObj.minings);
+                                for(let elem of groupObj.minings){
+                                    elem.date = new Date(elem.date);
+                                }
+                            }
+                        }
                     }
                 }
             }

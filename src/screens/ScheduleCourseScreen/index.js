@@ -53,15 +53,27 @@ class ScheduleCourseScreen extends React.Component{
         };
 
         const onPressMinings = () => {
-            this.props.navigation.navigate("MiningList",{
-                course:this.state.course
-            });
+            let miningsGroups = Object.keys(this.props["course" + this.state.course].groups);
+            if (miningsGroups.length > 0) {
+                this.props.navigation.navigate("MiningList", {
+                    course: this.state.course
+                    });
+            }
+            else {
+                this.props.navigation.navigate("NotFound");
+            }
         };
 
         const onPressSessions = () => {
-            this.props.navigation.navigate("SessionList",{
-                course:this.state.course
-            });
+            let sessionGroups = Object.keys(this.props["course" + this.state.course].groups);
+            if (sessionGroups.length > 0) {
+                this.props.navigation.navigate("SessionList", {
+                    course: this.state.course
+                });
+            }
+            else {
+                this.props.navigation.navigate("NotFound");
+            }
         };
 
         const onPressAddGroup = () => {

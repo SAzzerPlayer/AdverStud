@@ -14,13 +14,15 @@ class MiningEditScreen extends React.Component{
         super(props);
         let teachers = this.props.teachers;
         if(teachers.length === 0 ) teachers.push({id:"0"});
+        let group = this.props.navigation.getParam("group");
         this.state = {
             id : generateKey(64),
             teacher:teachers.id||"0",
             title:"",
             date: new Date(),
             datePickerIsVisible:false,
-            timePickerIsVisible:false
+            timePickerIsVisible:false,
+            group
         }
     }
 
@@ -72,10 +74,10 @@ class MiningEditScreen extends React.Component{
                 };
 
                 if(editMode){
-                    this.props.changeMining(obj,course);
+                    this.props.changeMining(obj,course, this.state.group);
                 }
                 else{
-                    this.props.addMining(obj,course);
+                    this.props.addMining(obj,course, this.state.group);
                 }
                 this.props.navigation.popToTop();
                 setTimeout(()=>{this.props.navigation.navigate("Menu")},100);
@@ -89,6 +91,7 @@ class MiningEditScreen extends React.Component{
             <View style={styles.screen}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <Text style={styles.h1}>ВІДПРАЦЮВАННЯ</Text>
+                    <Text style={[styles.h1,{marginTop:0}]}>{this.state.group}</Text>
                     <View style={styles.inputView}>
                         <Text style={styles.h2}>ДИСЦИПЛІНА</Text>
                         <TextColorButtons onChange={(text)=>{this.setState({title:text})}} text={this.state.title}/>
@@ -165,8 +168,8 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-        addMining:(obj,course)=>dispatch({type:"ADD_MINING",value:obj,course}),
-        changeMining:(obj,course)=>dispatch({type:"CHANGE_MINING",value:obj,course})
+        addMining:(obj,course, group)=>dispatch({type:"ADD_MINING",value:obj,course,group}),
+        changeMining:(obj,course, group)=>dispatch({type:"CHANGE_MINING",value:obj,course,group})
     }
 }
 

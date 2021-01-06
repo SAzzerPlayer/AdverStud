@@ -10,8 +10,6 @@ export default function(props){
         props.navigation.navigate("EnrolleeContestsEdit",{editMode:true,data:props.data});
     };
 
-    console.log(props.data.date);
-
     let date = props.data.date;
     if(typeof date === "string") date = new Date(date);
 

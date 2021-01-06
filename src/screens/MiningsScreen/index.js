@@ -5,6 +5,7 @@ import ListItem from '../../components/RecordListItem';
 import styles from './Style';
 
 import HOCSwipeBack from '../../hoc/GestureRightSwipe';
+import {Picker} from "@react-native-community/picker";
 
 const dictMonths = {
     0:"СІЧЕНЬ",
@@ -31,7 +32,8 @@ class MiningsScreen extends React.Component{
     constructor(props){
         super(props);
         let course = this.props.navigation.getParam("course");
-        let minings = this.props["course"+course];
+        let groups = Object.keys(this.props["course"+course].groups);
+        let minings = this.props["course"+course].groups[groups[0]].minings;
         minings = minings.sort(sortByDate);
         let miningsMonth = [];
         for(let i=0;i<12;i++) miningsMonth.push([]);//every number of counter is a number of month
@@ -41,7 +43,9 @@ class MiningsScreen extends React.Component{
         this.state = {
             minings : minings,
             miningsMonth : miningsMonth,
-            course
+            course,
+            groups,
+            pickerValue: groups[0]
         }
     }
     componentDidMount(){
@@ -53,7 +57,31 @@ class MiningsScreen extends React.Component{
     render(){
 
         const onPressAdd = () => {
-            this.props.navigation.navigate("MiningEdit",{editMode:false,course:this.state.course});
+            this.props.navigation.navigate("MiningEdit",{
+                editMode:false,
+                course:this.state.course,
+                group:this.state.pickerValue
+            });
+        };
+
+        const PickerItems = this.state.groups.map((currElem,index)=>{
+            return <Picker.Item label={currElem} value={currElem}/>
+        });
+
+        const onChangePicker = (itemValue,itemIndex)=>{
+            let schedule = this.props["course"+this.state.course].groups[itemValue];
+            let minings = schedule.minings;
+            minings = minings.sort(sortByDate);
+            let miningsMonth = [];
+            for(let i=0;i<12;i++) miningsMonth.push([]);//every number of counter is a number of month
+            for(let mining of minings){
+                miningsMonth[mining.date.getMonth()].push(mining);
+            }
+            this.setState({
+                pickerValue:itemValue,
+                minings : schedule.minings,
+                miningsMonth
+            })
         };
 
         return(
@@ -67,6 +95,20 @@ class MiningsScreen extends React.Component{
                             <Text style={styles.addText}>ДОДАТИ</Text>
                         </TouchableOpacity>}
                         {!this.props.adminMode && <View style={styles.empty}/>}
+                    </View>
+
+                    <View style={styles.groupView}>
+                        <View style={styles.empty}/>
+                        <Text style={styles.title}>{this.state.pickerValue}</Text>
+                        <Picker
+                            selectedValue={this.state.pickerValue}
+                            style={styles.picker}
+                            itemStyle={styles.p}
+                            onValueChange={onChangePicker}
+                            mode={'dialog'}
+                        >
+                            {PickerItems}
+                        </Picker>
                     </View>
                     {this.state.miningsMonth.map((currElem,index)=>{
                         if(currElem.length>0) {
@@ -84,7 +126,11 @@ class MiningsScreen extends React.Component{
                                             else return false;
                                         });
                                         const onPressEdit = () => {
-                                            this.props.navigation.navigate("MiningEdit",{editMode:true,data:mining,course:this.state.course})
+                                            this.props.navigation.navigate("MiningEdit",{
+                                                editMode:true,
+                                                data:mining,
+                                                course:this.state.course,
+                                                group:this.state.pickerValue})
                                         };
 
                                         const onPressDelete = () => {
@@ -92,7 +138,7 @@ class MiningsScreen extends React.Component{
                                                 [
                                                     {text:"Ні",onPress:()=>{}},
                                                     {text:"Так",onPress:()=>{
-                                                            this.props.deleteMining(mining,this.state.course);
+                                                            this.props.deleteMining(mining,this.state.course,this.state.pickerValue);
                                                             this.props.navigation.pop();
                                                         }}
                                                 ])
@@ -140,11 +186,11 @@ class MiningsScreen extends React.Component{
 
 function mapStateToProps(state){
     return {
-        course1:state.schedule.course1.minings,
-        course2:state.schedule.course2.minings,
-        course3:state.schedule.course3.minings,
-        course4:state.schedule.course4.minings,
-        course5:state.schedule.course5.minings,
+        course1:state.schedule.course1,
+        course2:state.schedule.course2,
+        course3:state.schedule.course3,
+        course4:state.schedule.course4,
+        course5:state.schedule.course5,
         teachers:state.teacher.arr,
         adminMode:state.global.adminMode
     }
@@ -152,7 +198,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-        deleteMining:(obj,course)=>dispatch({type:"DELETE_MINING",value:obj,course})
+        deleteMining:(obj,course,group)=>dispatch({type:"DELETE_MINING",value:obj,course,group})
     }
 }
 

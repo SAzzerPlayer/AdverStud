@@ -7,6 +7,7 @@ export default StyleSheet.create({
        width,
        height,
        padding: 24,
+       paddingTop:0,
        alignItems: 'center',
    },
     empty:{
@@ -40,6 +41,7 @@ export default StyleSheet.create({
         fontSize:16,
         fontWeight: 'bold',
         marginBottom: 24,
+        width:'60%',
         textAlign:"center"
     }
 

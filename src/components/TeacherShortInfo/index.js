@@ -6,6 +6,7 @@ export default function(props){
     const onPressEdit = () => {
         props.navigation.navigate("TeacherEdit",{editMode:true,data:props.data});
     };
+    const defaultPhoto = require('../../assets/images/noname.png');
     return(
         <View>
             {props.adminMode && <View style={styles.buttons}>
@@ -14,7 +15,7 @@ export default function(props){
                 </TouchableOpacity>
             </View>}
             <View style={styles.row}>
-                <Image style={styles.photo} source={props.data.image}/>
+                <Image style={styles.photo} source={props.data.image||defaultPhoto}/>
                 <View style={styles.info}>
                     <Text style={styles.h1}>{props.data.surname}</Text>
                     <Text style={styles.h2}>{props.data.firstname+" "+props.data.middlename}</Text>

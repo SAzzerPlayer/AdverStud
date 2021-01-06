@@ -24,9 +24,8 @@ export default StyleSheet.create({
         textAlign:'center'
     },
     photo:{
-       height:196,
+        height:196,
         width:196,
-        backgroundColor:'gray',
         borderRadius:30,
         marginBottom:24
     },

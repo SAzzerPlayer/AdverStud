@@ -10,7 +10,6 @@ export default StyleSheet.create({
     photo:{
         width:128,
         height:128,
-        backgroundColor:'gray',
         borderRadius:30
     },
     info:{
